@@ -206,6 +206,7 @@ def finetune(cfg: FinetuneConfig) -> None:
     #     prompt_builder_fn=PurePromptBuilder if "v01" not in cfg.vla_path else VicunaV15ChatPromptBuilder,
     # )
     # ---
+    print(f"build dataset `{cfg.data_root_dir}`")
     batch_transform = RLDSBatchTransform(
         action_tokenizer,
         processor.tokenizer,
@@ -220,6 +221,8 @@ def finetune(cfg: FinetuneConfig) -> None:
         shuffle_buffer_size=cfg.shuffle_buffer_size,
         image_aug=cfg.image_aug,
     )
+
+    print(f"vla_dataset len: {len(vla_dataset)}")
 
     # [Important] Save Dataset Statistics =>> used to de-normalize actions for inference!
     if distributed_state.is_main_process:

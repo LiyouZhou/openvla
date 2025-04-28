@@ -80,7 +80,7 @@ class RLDSDataset(IterableDataset):
     ) -> None:
         """Lightweight wrapper around RLDS TFDS Pipeline for use with PyTorch/OpenVLA Data Loaders."""
         self.data_root_dir, self.data_mix, self.batch_transform = data_root_dir, data_mix, batch_transform
-
+        print("self.data_root_dir", self.data_root_dir)
         # Configure RLDS Dataset(s)
         if self.data_mix in OXE_NAMED_MIXTURES:
             mixture_spec = OXE_NAMED_MIXTURES[self.data_mix]
@@ -88,6 +88,7 @@ class RLDSDataset(IterableDataset):
             # Assume that passed "mixture" name is actually a single dataset -- create single-dataset "mix"
             mixture_spec = [(self.data_mix, 1.0)]
 
+        print("self.data_root_dir", self.data_root_dir)
         # fmt: off
         per_dataset_kwargs, weights = get_oxe_dataset_kwargs_and_weights(
             self.data_root_dir,
@@ -140,6 +141,7 @@ class RLDSDataset(IterableDataset):
         self.dataset, self.dataset_length, self.dataset_statistics = self.make_dataset(rlds_config)
 
     def make_dataset(self, rlds_config):
+        print("self.data_root_dir", self.data_root_dir)
         return make_interleaved_dataset(**rlds_config)
 
     def __iter__(self) -> Dict[str, Any]:

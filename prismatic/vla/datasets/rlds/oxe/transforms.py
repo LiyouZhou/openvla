@@ -15,6 +15,7 @@ Transforms adopt the following structure:
     }
 """
 
+import string
 from typing import Any, Dict
 
 import tensorflow as tf
@@ -841,6 +842,11 @@ def libero_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
     return trajectory
 
 
+def mikasa_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
+    # trajectory["action"] = trajectory["action"][..., :7]
+    return trajectory
+
+
 # === Registry ===
 OXE_STANDARDIZATION_TRANSFORMS = {
     "bridge_oxe": bridge_oxe_dataset_transform,
@@ -919,4 +925,6 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     "libero_object_no_noops": libero_dataset_transform,
     "libero_goal_no_noops": libero_dataset_transform,
     "libero_10_no_noops": libero_dataset_transform,
+    "mikasa_robo_tfds": mikasa_dataset_transform,
+    "mikasa_robo_baseline_tfds": mikasa_dataset_transform,
 }
