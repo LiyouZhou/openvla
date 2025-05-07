@@ -24,6 +24,8 @@ from collections import deque
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
+from datetime import datetime
+import time
 
 import draccus
 import torch
@@ -107,18 +109,147 @@ class FinetuneConfig:
     wandb_entity: str = "stanford-voltron"                          # Name of entity to log under
     run_id_note: Optional[str] = None                               # Extra note for logging, Weights & Biases
 
+    # Validation Parameters
+    use_val_set: bool = True                                        # Whether to evaluate on validation set
+    val_frequency: int = 5000                                       # Frequency of validation set evaluation (in steps)
+    val_time_limit: int = 180                                       # Time limit for validation set evaluation (in seconds)
+    val_test_num_batches: int = 700                                 # Number of batches to test on validation set
+
     # fmt: on
+
+
+def log_metrics_to_wandb(metrics, prefix, step, wandb_entity) -> None:
+    """
+    Log metrics to Weights & Biases.
+
+    Args:
+        metrics (dict): Dictionary of metrics to log
+        prefix (str): Prefix for metric names
+        step (int): Training step
+        wandb_entity (str): W&B entity instance
+
+    Returns:
+        None.
+    """
+    log_dict = {}
+    for name, value in metrics.items():
+        # Map loss_value to Loss for better readability in W&B
+        if name == "loss_value":
+            log_dict[f"{prefix}/Loss"] = value
+        # Keep other metrics as is
+        else:
+            log_dict[f"{prefix}/{name.replace('_', ' ').title()}"] = value
+    wandb_entity.log(log_dict, step=step)
+
+
+def run_forward_pass(
+    vla,
+    batch,
+    device_id,
+):
+    """
+    Run a forward pass through the model and compute metrics.
+
+    Args:
+        vla (OpenVLAForActionPrediction): Vision-language-action policy.
+        batch (dict): Batch of data.
+        device_id (str): Device ID.
+
+    Returns:
+        Tuple: Tuple containing the output and metrics.
+    """
+    # Implementation of the forward pass and metric computation
+    output: CausalLMOutputWithPast = vla(
+        input_ids=batch["input_ids"].to(device_id),
+        attention_mask=batch["attention_mask"].to(device_id),
+        pixel_values=batch["pixel_values"].to(torch.bfloat16).to(device_id),
+        labels=batch["labels"],
+    )
+    loss = output.loss
+
+    metrics = {}
+    metrics["loss_value"] = loss.item()
+
+    return metrics
+
+
+def run_validation(
+    vla,
+    val_dataloader,
+    device_id,
+    log_step,
+    distributed_state,
+    val_time_limit,
+    val_test_num_batches=700,
+) -> None:
+    """
+    Compute validation set metrics for logging.
+
+    Args:
+        vla (OpenVLAForActionPrediction): Vision-language-action policy.
+        val_dataloader (DataLoader): Validation data loader.
+        device_id (str): Device ID.
+        log_step (int): Current logging step.
+        distributed_state (PartialState): Distributed training state.
+        val_time_limit (int): Time limit for computing validation metrics.
+
+    Returns:
+        None.
+    """
+    val_start_time = time.time()
+    vla.eval()
+    val_batches_count = 0
+
+    # List to store validation metrics
+    all_val_metrics = []
+
+    with tqdm.tqdm(total=val_test_num_batches, leave=False, desc="Validation") as progress:
+        with torch.no_grad():
+            for batch in val_dataloader:
+                # Always compute L1 loss for validation, even for diffusion
+                metrics = run_forward_pass(
+                    vla=vla,
+                    batch=batch,
+                    device_id=device_id,
+                )
+
+                # Add the loss value to the metrics
+                all_val_metrics.append(metrics)
+                val_batches_count += 1
+
+                progress.update()
+
+                if val_batches_count >= val_test_num_batches:
+                    break
+
+                # Cut testing on validation set short if it exceeds time limit
+                if time.time() - val_start_time > val_time_limit:
+                    break
+
+    # Compute average validation metrics
+    avg_val_metrics = {}
+    for metric_name in all_val_metrics[0].keys():
+        values = [metrics[metric_name] for metrics in all_val_metrics if metric_name in metrics]
+        if values:
+            avg_val_metrics[metric_name] = sum(values) / len(values)
+
+    # Add batch count to metrics
+    avg_val_metrics["val_batches_count"] = val_batches_count
+
+    # Log validation metrics to W&B
+    if distributed_state.is_main_process:
+        log_metrics_to_wandb(avg_val_metrics, "VLA Val", log_step, wandb)
 
 
 @draccus.wrap()
 def finetune(cfg: FinetuneConfig) -> None:
-    print(f"Fine-tuning OpenVLA Model `{cfg.vla_path}` on `{cfg.dataset_name}`")
-
     # [Validate] Ensure GPU Available & Set Device / Distributed Context
     assert torch.cuda.is_available(), "Fine-tuning assumes at least one GPU is available!"
     distributed_state = PartialState()
     torch.cuda.set_device(device_id := distributed_state.local_process_index)
     torch.cuda.empty_cache()
+
+    print(f"val: {cfg.val_frequency} {cfg.val_time_limit} {cfg.use_val_set}")
 
     # Configure Unique Experiment ID & Log Directory
     exp_id = (
@@ -134,6 +265,17 @@ def finetune(cfg: FinetuneConfig) -> None:
         exp_id += f"--{cfg.run_id_note}"
     if cfg.image_aug:
         exp_id += "--image_aug"
+
+    # get a datetime string for the current time
+    now = datetime.now()
+    dt_string = now.strftime("%y-%m-%d_%H-%M-%S")
+    exp_id += f"--{dt_string}"
+
+    # Initialize Logging =>> W&B
+    if distributed_state.is_main_process:
+        wandb.init(entity=cfg.wandb_entity, project=cfg.wandb_project, name=f"ft+{exp_id}")
+
+    print(f"Fine-tuning OpenVLA Model `{cfg.vla_path}` on `{cfg.dataset_name}`")
 
     # Start =>> Build Directories
     run_dir, adapter_dir = cfg.run_root_dir / exp_id, cfg.adapter_tmp_dir / exp_id
@@ -222,6 +364,17 @@ def finetune(cfg: FinetuneConfig) -> None:
         image_aug=cfg.image_aug,
     )
 
+    if cfg.use_val_set:
+        val_dataset = RLDSDataset(
+            cfg.data_root_dir,
+            cfg.dataset_name,
+            batch_transform,
+            resize_resolution=tuple(vla.module.config.image_sizes),
+            shuffle_buffer_size=cfg.shuffle_buffer_size // 10,
+            image_aug=cfg.image_aug,
+            train=False,
+        )
+
     print(f"vla_dataset len: {len(vla_dataset)}")
 
     # [Important] Save Dataset Statistics =>> used to de-normalize actions for inference!
@@ -240,14 +393,25 @@ def finetune(cfg: FinetuneConfig) -> None:
         num_workers=0,  # Important =>> Set to 0 if using RLDS; TFDS rolls its own parallelism!
     )
 
-    # Initialize Logging =>> W&B
-    if distributed_state.is_main_process:
-        wandb.init(entity=cfg.wandb_entity, project=cfg.wandb_project, name=f"ft+{exp_id}")
+    if cfg.use_val_set:
+        val_batch_size = cfg.batch_size
+        val_dataloader = DataLoader(
+            val_dataset,
+            batch_size=val_batch_size,
+            sampler=None,
+            collate_fn=collator,
+            num_workers=0,  # Important: Set to 0 if using RLDS, which uses its own parallelism
+        )
+
+        print(f"val_dataset len: {len(val_dataset)}, train_dataset len: {len(vla_dataset)}")
 
     # Deque to store recent train metrics (used for computing smoothened metrics for gradient accumulation)
     recent_losses = deque(maxlen=cfg.grad_accumulation_steps)
     recent_action_accuracies = deque(maxlen=cfg.grad_accumulation_steps)
     recent_l1_losses = deque(maxlen=cfg.grad_accumulation_steps)
+
+    last_validation_gradiant_step_idx = 0
+    last_save_gradiant_step_idx = 0
 
     # Train!
     with tqdm.tqdm(total=cfg.max_steps, leave=False) as progress:
@@ -365,6 +529,25 @@ def finetune(cfg: FinetuneConfig) -> None:
 
                 # Block on Main Process Checkpointing
                 dist.barrier()
+
+            # Test model on validation set
+            if (
+                gradient_step_idx > 0
+                and gradient_step_idx % cfg.val_frequency == 0
+                and last_validation_gradiant_step_idx != gradient_step_idx
+            ):
+                last_validation_gradiant_step_idx = gradient_step_idx
+                run_validation(
+                    vla=vla,
+                    val_dataloader=val_dataloader,
+                    device_id=device_id,
+                    log_step=gradient_step_idx,
+                    distributed_state=distributed_state,
+                    val_time_limit=cfg.val_time_limit,
+                    val_test_num_batches=cfg.val_test_num_batches,
+                )
+                # Set model back to training mode after validation
+                vla.train()
 
             # Stop training when max_steps is reached
             if gradient_step_idx == cfg.max_steps:
