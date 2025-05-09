@@ -142,8 +142,36 @@ def log_metrics_to_wandb(metrics, prefix, step, wandb_entity) -> None:
     wandb_entity.log(log_dict, step=step)
 
 
+def compute_metrics(
+    vla,
+    action_tokenizer,
+    batch,
+    output: CausalLMOutputWithPast,
+):
+
+    # Compute Accuracy and L1 Loss for Logging
+    action_logits = output.logits[:, vla.module.vision_backbone.featurizer.patch_embed.num_patches : -1]
+    action_preds = action_logits.argmax(dim=2)
+    action_gt = batch["labels"][:, 1:].to(action_preds.device)
+    mask = action_gt > action_tokenizer.action_token_begin_idx
+
+    # Compute Accuracy
+    correct_preds = (action_preds == action_gt) & mask
+    action_accuracy = correct_preds.sum().float() / mask.sum().float()
+
+    # Compute L1 Loss on Predicted (Continuous) Actions
+    continuous_actions_pred = torch.tensor(
+        action_tokenizer.decode_token_ids_to_actions(action_preds[mask].cpu().numpy())
+    )
+    continuous_actions_gt = torch.tensor(action_tokenizer.decode_token_ids_to_actions(action_gt[mask].cpu().numpy()))
+    action_l1_loss = torch.nn.functional.l1_loss(continuous_actions_pred, continuous_actions_gt)
+
+    return action_l1_loss, action_accuracy
+
+
 def run_forward_pass(
     vla,
+    action_tokenizer,
     batch,
     device_id,
 ):
@@ -169,12 +197,16 @@ def run_forward_pass(
 
     metrics = {}
     metrics["loss_value"] = loss.item()
+    action_l1_loss, action_accuracy = compute_metrics(vla, action_tokenizer, batch, output)
+    metrics["action_accuracy"] = action_accuracy.item()
+    metrics["l1_loss"] = action_l1_loss.item()
 
     return metrics
 
 
 def run_validation(
     vla,
+    action_tokenizer,
     val_dataloader,
     device_id,
     log_step,
@@ -209,6 +241,7 @@ def run_validation(
                 # Always compute L1 loss for validation, even for diffusion
                 metrics = run_forward_pass(
                     vla=vla,
+                    action_tokenizer=action_tokenizer,
                     batch=batch,
                     device_id=device_id,
                 )
@@ -370,7 +403,7 @@ def finetune(cfg: FinetuneConfig) -> None:
             cfg.dataset_name,
             batch_transform,
             resize_resolution=tuple(vla.module.config.image_sizes),
-            shuffle_buffer_size=cfg.shuffle_buffer_size // 10,
+            shuffle_buffer_size=cfg.shuffle_buffer_size,
             image_aug=cfg.image_aug,
             train=False,
         )
@@ -394,10 +427,9 @@ def finetune(cfg: FinetuneConfig) -> None:
     )
 
     if cfg.use_val_set:
-        val_batch_size = cfg.batch_size
         val_dataloader = DataLoader(
             val_dataset,
-            batch_size=val_batch_size,
+            batch_size=cfg.batch_size,
             sampler=None,
             collate_fn=collator,
             num_workers=0,  # Important: Set to 0 if using RLDS, which uses its own parallelism
@@ -433,26 +465,8 @@ def finetune(cfg: FinetuneConfig) -> None:
             # Backward pass
             normalized_loss.backward()
 
-            # Compute Accuracy and L1 Loss for Logging
-            action_logits = output.logits[:, vla.module.vision_backbone.featurizer.patch_embed.num_patches : -1]
-            action_preds = action_logits.argmax(dim=2)
-            action_gt = batch["labels"][:, 1:].to(action_preds.device)
-            mask = action_gt > action_tokenizer.action_token_begin_idx
-
-            # Compute Accuracy
-            correct_preds = (action_preds == action_gt) & mask
-            action_accuracy = correct_preds.sum().float() / mask.sum().float()
-
-            # Compute L1 Loss on Predicted (Continuous) Actions
-            continuous_actions_pred = torch.tensor(
-                action_tokenizer.decode_token_ids_to_actions(action_preds[mask].cpu().numpy())
-            )
-            continuous_actions_gt = torch.tensor(
-                action_tokenizer.decode_token_ids_to_actions(action_gt[mask].cpu().numpy())
-            )
-            action_l1_loss = torch.nn.functional.l1_loss(continuous_actions_pred, continuous_actions_gt)
-
             # Store recent train metrics
+            action_l1_loss, action_accuracy = compute_metrics(vla, action_tokenizer, batch, output)
             recent_losses.append(loss.item())
             recent_action_accuracies.append(action_accuracy.item())
             recent_l1_losses.append(action_l1_loss.item())
@@ -539,6 +553,7 @@ def finetune(cfg: FinetuneConfig) -> None:
                 last_validation_gradiant_step_idx = gradient_step_idx
                 run_validation(
                     vla=vla,
+                    action_tokenizer=action_tokenizer,
                     val_dataloader=val_dataloader,
                     device_id=device_id,
                     log_step=gradient_step_idx,
