@@ -270,6 +270,7 @@ def run_validation(
 
     # Add batch count to metrics
     avg_val_metrics["val_batches_count"] = val_batches_count
+    avg_val_metrics["elapsed_time"] = time.time() - val_start_time
 
     # Log validation metrics to W&B
     if distributed_state.is_main_process:
