@@ -186,13 +186,15 @@ def run_forward_pass(
     Returns:
         Tuple: Tuple containing the output and metrics.
     """
-    # Implementation of the forward pass and metric computation
-    output: CausalLMOutputWithPast = vla(
-        input_ids=batch["input_ids"].to(device_id),
-        attention_mask=batch["attention_mask"].to(device_id),
-        pixel_values=batch["pixel_values"].to(torch.bfloat16).to(device_id),
-        labels=batch["labels"],
-    )
+
+    with torch.autocast("cuda", dtype=torch.bfloat16):
+        output: CausalLMOutputWithPast = vla(
+            input_ids=batch["input_ids"].to(device_id),
+            attention_mask=batch["attention_mask"].to(device_id),
+            pixel_values=batch["pixel_values"].to(torch.bfloat16).to(device_id),
+            labels=batch["labels"],
+        )
+
     loss = output.loss
 
     metrics = {}
