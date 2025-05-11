@@ -927,5 +927,8 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     "libero_10_no_noops": libero_dataset_transform,
     "mikasa_robo_tfds": mikasa_dataset_transform,
     "mikasa_robo_baseline_tfds": mikasa_dataset_transform,
+    "mikasa_robo_tfds/RememberColor3-v0": mikasa_dataset_transform,
     "mikasa_robo_tfds/RememberColor9-v0": mikasa_dataset_transform,
+    "mikasa_robo_tfds/RememberColor3-v0_baseline": mikasa_dataset_transform,
+    "mikasa_robo_tfds/RememberColor9-v0_baseline": mikasa_dataset_transform,
 }

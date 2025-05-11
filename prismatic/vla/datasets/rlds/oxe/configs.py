@@ -677,18 +677,10 @@ OXE_DATASET_CONFIGS = {
         "state_encoding": StateEncoding.POS_EULER,
         "action_encoding": ActionEncoding.EEF_POS,
     },
-    "mikasa_robo_baseline_tfds": {
-        "image_obs_keys": {"primary": "image", "secondary": None, "wrist": None},
-        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
-        "state_obs_keys": ["state"],
-        "state_encoding": StateEncoding.POS_EULER,
-        "action_encoding": ActionEncoding.EEF_POS,
-    },
-    "mikasa_robo_tfds/RememberColor9-v0": {
-        "image_obs_keys": {"primary": "image", "secondary": None, "wrist": None},
-        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
-        "state_obs_keys": ["state"],
-        "state_encoding": StateEncoding.POS_EULER,
-        "action_encoding": ActionEncoding.EEF_POS,
-    },
 }
+
+OXE_DATASET_CONFIGS["mikasa_robo_baseline_tfds"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
+OXE_DATASET_CONFIGS["mikasa_robo_tfds/RememberColor3-v0"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
+OXE_DATASET_CONFIGS["mikasa_robo_tfds/RememberColor9-v0"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
+OXE_DATASET_CONFIGS["mikasa_robo_tfds/RememberColor3-v0_baseline"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
+OXE_DATASET_CONFIGS["mikasa_robo_tfds/RememberColor9-v0_baseline"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
