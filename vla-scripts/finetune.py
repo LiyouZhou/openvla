@@ -115,6 +115,8 @@ class FinetuneConfig:
     val_time_limit: int = 180                                       # Time limit for validation set evaluation (in seconds)
     val_test_num_batches: int = 700                                 # Number of batches to test on validation set
 
+    # resume parameters
+    start_step: int = 0
     # fmt: on
 
 
@@ -449,7 +451,7 @@ def finetune(cfg: FinetuneConfig) -> None:
     last_save_gradiant_step_idx = 0
 
     # Train!
-    with tqdm.tqdm(total=cfg.max_steps, leave=False) as progress:
+    with tqdm.tqdm(total=cfg.max_steps, leave=False, initial=cfg.start_step) as progress:
         vla.train()
         optimizer.zero_grad()
         for batch_idx, batch in enumerate(dataloader):
@@ -475,7 +477,7 @@ def finetune(cfg: FinetuneConfig) -> None:
             recent_l1_losses.append(action_l1_loss.item())
 
             # Compute gradient step index
-            gradient_step_idx = batch_idx // cfg.grad_accumulation_steps
+            gradient_step_idx = batch_idx // cfg.grad_accumulation_steps + cfg.start_step
 
             # Compute smoothened train metrics
             #   =>> Equal to current step metrics when not using gradient accumulation
