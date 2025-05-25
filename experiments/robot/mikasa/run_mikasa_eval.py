@@ -22,11 +22,12 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Union
-import math,torch
+import math, torch
 
 import draccus
 import numpy as np
 import tqdm
+
 # from libero.libero import benchmark
 
 import wandb
@@ -57,6 +58,7 @@ from experiments.robot.robot_utils import (
 )
 import imageio
 
+
 def save_rollout_video(rollout_images, idx, success, task_description, log_file=None):
     """Saves an MP4 replay of an episode."""
     rollout_dir = f"./rollouts/{DATE}"
@@ -72,7 +74,11 @@ def save_rollout_video(rollout_images, idx, success, task_description, log_file=
         log_file.write(f"Saved rollout MP4 at path {mp4_path}\n")
 
     for i, img in enumerate(rollout_images):
-        imageio.imwrite(f"{rollout_dir}/{DATE_TIME}--episode={idx}--success={success}--task={processed_task_description}--frame={i}.png", img)
+        imageio.imwrite(
+            f"{rollout_dir}/{DATE_TIME}--episode={idx}--success={success}--task={processed_task_description}--frame={i}.png",
+            img,
+        )
+
     return mp4_path
 
 
@@ -136,6 +142,8 @@ class GenerateConfig:
 
     seed: int = 7                                    # Random Seed (for reproducibility)
 
+    # [OpenVLA] Set action un-normalization key
+    unnorm_key: str = "mikasa_robo_baseline_tfds"
     # fmt: on
 
 
@@ -148,9 +156,6 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
 
     # Set random seed
     set_seed_everywhere(cfg.seed)
-
-    # [OpenVLA] Set action un-normalization key
-    cfg.unnorm_key = "mikasa_robo_baseline_tfds"
 
     # Load model
     model = get_model(cfg)
@@ -194,7 +199,6 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
     # print(f"Task suite: {cfg.task_suite_name}")
     # log_file.write(f"Task suite: {cfg.task_suite_name}\n")
 
-
     num_tasks_in_suite = 1
 
     # Get expected image dimensions
@@ -212,19 +216,19 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
         # # Initialize LIBERO environment and task description
         # env, task_description = get_libero_env(task, cfg.model_family, resolution=256)
         env_name = "RememberColor3-v0"
-        seed = 42
+        # seed = 42
         num_envs = 1
         env_kwargs_rgb = dict(
-            num_envs = num_envs,
+            num_envs=num_envs,
             obs_mode="rgb",
             control_mode="pd_ee_delta_pose",
             render_mode="all",
             sim_backend="gpu",
-            reward_mode="normalized_dense"
+            reward_mode="normalized_dense",
+            max_episode_steps=100,
         )
-    
+
         env = gym.make(env_name, **env_kwargs_rgb)
-        task_description = "Touch the red cube"
         state_wrappers_list, episode_timeout = env_info(env_name)
         print(f"Episode timeout: {episode_timeout}")
         for wrapper_class, wrapper_kwargs in state_wrappers_list:
@@ -232,12 +236,17 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
 
         # Start episodes
         task_episodes, task_successes = 0, 0
+        dist_to_target = []
         for episode_idx in tqdm.tqdm(range(cfg.num_trials_per_task)):
+            # Reset environment
+            obs, info = env.reset()
+
+            oracle_info = int(info["oracle_info"].cpu())
+            color = ["red", "green", "blue"][oracle_info]
+            task_description = f"Touch the {color} cube"
+
             print(f"\nTask: {task_description}")
             log_file.write(f"\nTask: {task_description}\n")
-
-            # Reset environment
-            obs, _ = env.reset()
 
             # Set initial states
             # obs = env.set_init_state(initial_states[episode_idx])
@@ -296,7 +305,7 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
                     task_description,
                     processor=processor,
                 )
-                print(f"Action: {action}")
+                # print(f"Action: {action}")
 
                 # Normalize gripper action [0,1] -> [-1,+1] because the environment expects the latter
                 action = normalize_gripper_action(action, binarize=True)
@@ -310,15 +319,18 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
                 # print(f"Action: {type(action)} {action.shape} {action}")
                 # action = np.append(action, action[-1])
                 action = torch.from_numpy(action)
+                action = action * 10
                 action = torch.stack([action] * num_envs)
                 obs, reward, terminated, truncated, info = env.step(action)
                 terminated = True if terminated[0].cpu() else False
                 truncated = True if truncated[0].cpu() else False
+                # print(reward, info)
 
-                if terminated:
+                if info["success"] == 1:
                     task_successes += 1
                     total_successes += 1
-                
+                    break
+
                 if terminated or truncated:
                     break
                 t += 1
@@ -332,9 +344,20 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
             total_episodes += 1
 
             # Save a replay video of the episode
-            save_rollout_video(
+            mp4_path = save_rollout_video(
                 replay_images, total_episodes, success=terminated, task_description=task_description, log_file=log_file
             )
+
+            dist_to_target.append(info["reward_dict"]["tcp_to_obj_dist"].cpu().numpy())
+            if cfg.use_wandb:
+                wandb.log(
+                    {
+                        f"rollout_video/{task_description}": wandb.Video(mp4_path, format="mp4"),
+                        f"sucess": info["success"].cpu(),
+                        f"distance_to_target": info["reward_dict"]["tcp_to_obj_dist"],
+                        f"episode_idx": episode_idx,
+                    }
+                )
 
             # Log current results
             print(f"Success: {terminated}")
@@ -346,16 +369,20 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
             log_file.flush()
 
         # Log final results
+        avg_dist_to_target = np.mean(dist_to_target)
         print(f"Current task success rate: {float(task_successes) / float(task_episodes)}")
         print(f"Current total success rate: {float(total_successes) / float(total_episodes)}")
+        print(f"Average Distance to target: {avg_dist_to_target}")
         log_file.write(f"Current task success rate: {float(task_successes) / float(task_episodes)}\n")
         log_file.write(f"Current total success rate: {float(total_successes) / float(total_episodes)}\n")
+        log_file.write(f"Average Distance to target: {avg_dist_to_target}\n")
         log_file.flush()
         if cfg.use_wandb:
             wandb.log(
                 {
-                    f"success_rate/{task_description}": float(task_successes) / float(task_episodes),
-                    f"num_episodes/{task_description}": task_episodes,
+                    f"{task_description}/success_rate": float(task_successes) / float(task_episodes),
+                    f"{task_description}/num_episodes": task_episodes,
+                    f"{task_description}/average_distance": avg_dist_to_target,
                 }
             )
 
