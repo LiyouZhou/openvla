@@ -206,9 +206,15 @@ OXE_NAMED_MIXTURES: Dict[str, List[Tuple[str, float]]] = {
     "libero_10_no_noops": [
         ("libero_10_no_noops", 1.0),
     ],
-
     "mikasa_baseline_mix": [
         ("mikasa_robo_tfds/RememberColor3-v0_baseline", 1.0),
+        ("mikasa_robo_tfds/RememberColor9-v0_baseline", 1.0),
+    ],
+    "mikasa_mix": [
+        ("mikasa_robo_tfds/RememberColor3-v0", 1.0),
+        ("mikasa_robo_tfds/RememberColor3-v0_baseline", 1.0),
+        ("mikasa_robo_tfds/RememberColor5-v0", 1.0),
+        ("mikasa_robo_tfds/RememberColor9-v0", 1.0),
         ("mikasa_robo_tfds/RememberColor9-v0_baseline", 1.0),
     ]
 }
