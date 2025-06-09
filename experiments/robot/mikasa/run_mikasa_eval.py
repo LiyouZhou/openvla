@@ -22,18 +22,14 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Union
-import math, torch
+import torch
 
 import draccus
 import numpy as np
 import tqdm
 
-# from libero.libero import benchmark
-
 import wandb
-import mikasa_robo_suite
 import gymnasium as gym
-from mikasa_robo_suite.utils.wrappers import StateOnlyTensorToDictWrapper
 from mikasa_robo_suite.dataset_collectors.get_mikasa_robo_datasets import env_info
 
 from prismatic.models.backbones.llm.prompting.base_prompter import PurePromptBuilder
@@ -45,13 +41,6 @@ from transformers.modeling_outputs import CausalLMOutputWithPast
 
 # Append current directory so that interpreter can find experiments.robot
 sys.path.append("../..")
-# from experiments.robot.libero.libero_utils import (
-#     get_libero_dummy_action,
-#     get_libero_env,
-#     get_libero_image,
-#     quat2axisangle,
-#     save_rollout_video,
-# )
 from experiments.robot.openvla_utils import get_processor
 from experiments.robot.robot_utils import (
     DATE,
@@ -63,6 +52,10 @@ from experiments.robot.robot_utils import (
     normalize_gripper_action,
     set_seed_everywhere,
 )
+from experiments.robot.openvla_utils import crop_and_resize
+
+import tensorflow as tf
+from PIL import Image
 import imageio
 
 
@@ -87,33 +80,6 @@ def save_rollout_video(rollout_images, idx, success, task_description, log_file=
         )
 
     return mp4_path
-
-
-def quat2axisangle(quat):
-    """
-    Copied from robosuite: https://github.com/ARISE-Initiative/robosuite/blob/eafb81f54ffc104f905ee48a16bb15f059176ad3/robosuite/utils/transform_utils.py#L490C1-L512C55
-
-    Converts quaternion to axis-angle format.
-    Returns a unit vector direction scaled by its angle in radians.
-
-    Args:
-        quat (np.array): (x,y,z,w) vec4 float angles
-
-    Returns:
-        np.array: (ax,ay,az) axis-angle exponential coordinates
-    """
-    # clip quaternion
-    if quat[3] > 1.0:
-        quat[3] = 1.0
-    elif quat[3] < -1.0:
-        quat[3] = -1.0
-
-    den = np.sqrt(1.0 - quat[3] * quat[3])
-    if math.isclose(den, 0.0):
-        # This is (close to) a zero degree rotation, immediately return
-        return np.zeros(3)
-
-    return (quat[:3] * 2.0 * math.acos(quat[3])) / den
 
 
 @dataclass
@@ -149,12 +115,129 @@ class GenerateConfig:
 
     seed: int = 7                                    # Random Seed (for reproducibility)
 
-    unnorm_key: str = "mikasa_robo_baseline_tfds"    # [OpenVLA] Set action un-normalization key
-    baseline_prompt: bool = False                    # Whether to use the baseline prompt with priviliged information
-
     num_envs: int = 4                                # Number of environments to run in parallel (for multi-agent tasks)
     #################################################################################################################
     # fmt: on
+
+
+TEST_SUITES = {
+    "mikasa": {
+        "tasks": [
+            {
+                "task_name": "RememberColor3-v0",
+                "env_name": "RememberColor3-v0",
+                "baseline_prompt": False,
+            },
+            {
+                "task_name": "RememberColor3-v0_baseline",
+                "env_name": "RememberColor3-v0",
+                "baseline_prompt": True,
+            },
+        ],
+    }
+}
+
+
+def center_crop(image, batch_size=1, crop_scale=0.9, return_pil_image=False):
+    image = Image.fromarray(image)
+    image = image.convert("RGB")
+
+    # Convert to TF Tensor and record original data type (should be tf.uint8)
+    image = tf.convert_to_tensor(np.array(image))
+    orig_dtype = image.dtype
+
+    # Convert to data type tf.float32 and values between [0,1]
+    image = tf.image.convert_image_dtype(image, tf.float32)
+
+    # Crop and then resize back to original size
+    image = crop_and_resize(image, crop_scale, batch_size)
+
+    # Convert back to original data type
+    image = tf.clip_by_value(image, 0, 1)
+    image = tf.image.convert_image_dtype(image, orig_dtype, saturate=True)
+
+    # Convert back to PIL Image
+    image = Image.fromarray(image.numpy())
+    image = image.convert("RGB")
+
+    if return_pil_image:
+        return image
+
+    image = np.array(image)
+
+    return image
+
+
+def predict_action(
+    model, input_ids: Optional[torch.LongTensor] = None, unnorm_key: Optional[str] = None, **kwargs: str
+) -> np.ndarray:
+    """Thin wrapper around .generate() that decodes predicted actions and unnormalizes them."""
+    # If the special empty token ('') does not already appear after the colon (':') token in the prompt
+    # (after "OUT:" or "ASSISTANT:"), insert it to match the inputs seen at training time
+    if not torch.all(input_ids[:, -1] == 29871):
+        batch_size = input_ids.shape[0] if input_ids is not None else 1
+        input_ids = torch.cat(
+            (input_ids, torch.Tensor([29871]).long().repeat(batch_size, 1).to(input_ids.device)), dim=1
+        )
+
+    # Run VLA inference
+    generated_ids = model.generate(input_ids, max_new_tokens=model.get_action_dim(unnorm_key), **kwargs)
+
+    batch_actions = []
+    for i in range(generated_ids.shape[0]):
+        # Extract predicted action tokens and translate into (normalized) continuous actions
+        predicted_action_token_ids = generated_ids[i, -model.get_action_dim(unnorm_key) :].cpu().numpy()
+        discretized_actions = model.vocab_size - predicted_action_token_ids
+        discretized_actions = np.clip(discretized_actions - 1, a_min=0, a_max=model.bin_centers.shape[0] - 1)
+        normalized_actions = model.bin_centers[discretized_actions]
+
+        # Unnormalize actions
+        action_norm_stats = model.get_action_stats(unnorm_key)
+        mask = action_norm_stats.get("mask", np.ones_like(action_norm_stats["q01"], dtype=bool))
+        action_high, action_low = np.array(action_norm_stats["q99"]), np.array(action_norm_stats["q01"])
+        actions = np.where(
+            mask,
+            0.5 * (normalized_actions + 1) * (action_high - action_low) + action_low,
+            normalized_actions,
+        )
+
+        batch_actions.append(actions)
+
+    # Stack actions and return
+    actions = np.stack(batch_actions, axis=0)
+
+    return actions
+
+
+def infer_batch(images, prompts, model, processor, unnorm_key, crop_scale=0.9):
+    """Infer a batch of samples."""
+    batch_size = len(images)
+    assert len(prompts) == batch_size, "Number of prompts must match number of images!"
+
+    prompts = [f"In: What action should the robot take to {prompt.lower()}?\nOut:" for prompt in prompts]
+
+    # Center crop images if necessary
+    if crop_scale < 1 and crop_scale > 0:
+        images = [center_crop(image, crop_scale=crop_scale, return_pil_image=True) for image in images]
+
+    # Process inputs.
+    input = processor(prompts, images).to("cuda", dtype=torch.bfloat16)
+
+    # Get action.
+    actions = [
+        model.predict_action(
+            input_ids=input["input_ids"][i].unsqueeze(0),
+            attention_mask=input["attention_mask"][i].unsqueeze(0),
+            pixel_values=input["pixel_values"][i].unsqueeze(0),
+            unnorm_key=unnorm_key,
+            do_sample=False,
+        )
+        for i in range(batch_size)
+    ]
+
+    actions = np.array(actions)
+
+    return actions
 
 
 @draccus.wrap()
@@ -169,16 +252,6 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
 
     # Load model
     model = get_model(cfg)
-
-    # [OpenVLA] Check that the model contains the action un-normalization key
-    if cfg.model_family == "openvla":
-        # In some cases, the key must be manually modified (e.g. after training on a modified version of the dataset
-        # with the suffix "_no_noops" in the dataset name)
-        if cfg.unnorm_key not in model.norm_stats and f"{cfg.unnorm_key}_no_noops" in model.norm_stats:
-            cfg.unnorm_key = f"{cfg.unnorm_key}_no_noops"
-
-        print(model.norm_stats.keys())
-        assert cfg.unnorm_key in model.norm_stats, f"Action un-norm key {cfg.unnorm_key} not found in VLA `norm_stats`!"
 
     # [OpenVLA] Get Hugging Face processor
     processor = None
@@ -212,14 +285,7 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
             name=run_id,
         )
 
-    # Initialize LIBERO task suite
-    # benchmark_dict = benchmark.get_benchmark_dict()
-    # task_suite = benchmark_dict[cfg.task_suite_name]()
-    # num_tasks_in_suite = task_suite.n_tasks
-    # print(f"Task suite: {cfg.task_suite_name}")
-    # log_file.write(f"Task suite: {cfg.task_suite_name}\n")
-
-    num_tasks_in_suite = 1
+    num_tasks_in_suite = len(TEST_SUITES[cfg.task_suite_name]["tasks"])
 
     # Get expected image dimensions
     resize_size = get_image_resize_size(cfg)
@@ -227,16 +293,9 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
     # Start evaluation
     total_episodes, total_successes = 0, 0
     for task_id in tqdm.tqdm(range(num_tasks_in_suite)):
-        # # Get task
-        # task = task_suite.get_task(task_id)
-
-        # # Get default LIBERO initial states
-        # initial_states = task_suite.get_task_init_states(task_id)
-
-        # # Initialize LIBERO environment and task description
-        # env, task_description = get_libero_env(task, cfg.model_family, resolution=256)
-        env_name = "RememberColor3-v0"
-        # seed = 42
+        env_name = TEST_SUITES[cfg.task_suite_name]["tasks"][task_id]["env_name"]
+        task_name = TEST_SUITES[cfg.task_suite_name]["tasks"][task_id]["task_name"]
+        print(f"Running task {task_name}...")
         num_envs = cfg.num_envs
         env_kwargs_rgb = dict(
             num_envs=num_envs,
@@ -245,8 +304,12 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
             render_mode="all",
             sim_backend="gpu",
             reward_mode="normalized_dense",
-            max_episode_steps=100,
         )
+        unnorm_key = f"mikasa_robo_tfds/{env_name}"  # Action un-normalization key for OpenVLA
+        # [OpenVLA] Check that the model contains the action un-normalization key
+        assert (
+            unnorm_key in model.norm_stats
+        ), f"Action un-norm key {unnorm_key} not found in VLA `norm_stats`! valid keys: {model.norm_stats.keys()}"
 
         env = gym.make(env_name, **env_kwargs_rgb)
         state_wrappers_list, episode_timeout = env_info(env_name)
@@ -264,17 +327,16 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
 
             oracle_info = [int(x) for x in info["oracle_info"].cpu()]
             colors = [["red", "green", "blue"][x] for x in oracle_info]
-            if cfg.baseline_prompt:
-                prompts = [f"Touch the {color} cube" for color in colors]
-            else:
-                prompts = [
-                    "Memorize the the colors of the cube shown on the table, and then touch the same coloured cube out of all the cubes."
-                ] * len(colors)
+            prompts = [
+                (
+                    f"Touch the {color} cube"
+                    if TEST_SUITES[cfg.task_suite_name]["tasks"][task_id]["baseline_prompt"]
+                    else "Memorize the the colors of the cube shown on the table, and then touch the same coloured cube out of all the cubes."
+                )
+                for color in colors
+            ]
 
             log_file.write(f"\nTask: {prompts}\n")
-
-            # Set initial states
-            # obs = env.set_init_state(initial_states[episode_idx])
 
             # Setup
             t = 0
@@ -300,75 +362,23 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
                     t += 1
                     continue
 
-                # Get preprocessed image
-                img = obs["sensor_data"]["base_camera"]["rgb"]
-                img = img.cpu().numpy()
+                # Get observation image
+                images = obs["sensor_data"]["base_camera"]["rgb"]
+                images = images.cpu().numpy()
 
                 # Save preprocessed image for replay video
                 for i in range(num_envs):
-                    replay_images[i].append(img[i])
-                # Prepare observations dict
-                # Note: OpenVLA does not take proprio state as input
-                samples = [
-                    {
-                        "dataset_name": cfg.unnorm_key,
-                        "action": np.zeros((1, 7)),  # Dummy action
-                        "observation": {"image_primary": img[i : i + 1]},
-                        "task": {
-                            "language_instruction": prompts[i].encode("utf-8"),
-                        },
-                    }
-                    for i in range(num_envs)
-                ]
+                    replay_images[i].append(images[i])
 
-                # Query model to get action
-                # action = get_action(
-                #     cfg,
-                #     model,
-                #     observation,
-                #     prompt,
-                #     processor=processor,
-                # )
-                # print(f"Action: {action}")
-                transformed_samples = [batch_transform(sample) for sample in samples]
-                batch = collator(transformed_samples)
-                model.eval()
-                with torch.no_grad():
-                    with torch.autocast("cuda", dtype=torch.bfloat16):
-                        output: CausalLMOutputWithPast = model(
-                            input_ids=batch["input_ids"].to("cuda"),
-                            attention_mask=batch["attention_mask"].to("cuda"),
-                            pixel_values=batch["pixel_values"].to(torch.bfloat16).to("cuda"),
-                            labels=batch["labels"],
-                        )
-
-                action_logits = output.logits[:, model.vision_backbone.featurizer.patch_embed.num_patches : -1]
-                action_preds = action_logits.argmax(dim=2)
-                continuous_actions_pred = action_tokenizer.decode_token_ids_to_actions(
-                    action_preds[:, -8:-1].cpu().numpy()
+                # query VLA model for action
+                actions = infer_batch(
+                    images=images,
+                    prompts=prompts,
+                    model=model,
+                    processor=processor,
+                    unnorm_key=unnorm_key,
+                    crop_scale=0.9 if cfg.center_crop else 1.0,
                 )
-
-                action_norm_stats = model.get_action_stats(cfg.unnorm_key)
-                action_high, action_low = np.array(action_norm_stats["q99"]), np.array(action_norm_stats["q01"])
-                mask = action_norm_stats.get("mask", np.ones_like(action_norm_stats["q01"], dtype=bool))
-
-                # print("batch['labels']", batch["labels"].shape)
-                # print(f"output logits: {output.logits.shape}")
-                # print(f"action logits: {action_logits.shape}")
-                # print(f"action preds: {action_preds.shape}")
-                # print(f"continuous actions pred: {continuous_actions_pred.shape}")
-
-                actions = np.where(
-                    mask,
-                    0.5 * (continuous_actions_pred + 1) * (action_high - action_low) + action_low,
-                    continuous_actions_pred,
-                )
-
-                # print(f"Action: {actions.shape}")
-
-                # Execute action in environment
-                # print(f"Action: {type(action)} {action.shape} {action}")
-                # action = np.append(action, action[-1])
                 actions = torch.from_numpy(actions)
                 actions = actions * 10
                 obs, reward, terminated, truncated, info = env.step(actions)
@@ -407,21 +417,21 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
                     replay_images[i],
                     total_episodes,
                     success=terminated_flags[i],
-                    task_description=env_name,
+                    task_description=task_name,
                     log_file=log_file,
                 )
 
                 if cfg.use_wandb:
                     wandb.log(
                         {
-                            f"rollout_video/{env_name}/{colors[i]}": wandb.Video(mp4_path, format="mp4"),
+                            f"rollout_video/{task_name}/{colors[i]}": wandb.Video(mp4_path, format="mp4"),
                             f"sucess": success_flags[i],
                             f"distance_to_target": final_distances[i],
                             f"reward": final_rewards[i],
                             f"episode_idx": task_episodes - 1,
                         }
                     )
-                
+
                 dist_to_target.append(final_distances[i])
                 all_rewards.append(final_rewards[i])
 
