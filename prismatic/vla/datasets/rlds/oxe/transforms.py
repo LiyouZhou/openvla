@@ -929,5 +929,5 @@ OXE_STANDARDIZATION_TRANSFORMS = {
 }
 
 OXE_STANDARDIZATION_TRANSFORMS.update(
-    {dataset_name: mikasa_dataset_transform for dataset_name in OXE_DATASET_CONFIGS.keys() if "MIKASA" in dataset_name}
+    {dataset_name: mikasa_dataset_transform for dataset_name in OXE_DATASET_CONFIGS.keys() if "mikasa" in dataset_name}
 )

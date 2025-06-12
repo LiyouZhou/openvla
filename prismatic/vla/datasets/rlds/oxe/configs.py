@@ -717,4 +717,4 @@ MIKASA_ROBO_TFDS_TASKS = [
 ]
 
 for task_name in MIKASA_ROBO_TFDS_TASKS:
-    OXE_DATASET_CONFIGS[f"MIKASA-Robo-TFDS/{task_name}"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
+    OXE_DATASET_CONFIGS[f"mikasa_robo_tfds/{task_name}"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]

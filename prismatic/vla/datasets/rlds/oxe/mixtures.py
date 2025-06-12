@@ -6,7 +6,7 @@ a float "sampling weight"
 """
 
 from typing import Dict, List, Tuple
-from prismatic.vla.datasets.rlds.oxe.mixtures import OXE_DATASET_CONFIGS
+from prismatic.vla.datasets.rlds.oxe.configs import OXE_DATASET_CONFIGS
 
 # fmt: off
 OXE_NAMED_MIXTURES: Dict[str, List[Tuple[str, float]]] = {
@@ -208,19 +208,19 @@ OXE_NAMED_MIXTURES: Dict[str, List[Tuple[str, float]]] = {
         ("libero_10_no_noops", 1.0),
     ],
     "mikasa_remember_color_baseline_mix": [
-        ("MIKASA-Robo-TFDS/RememberColor3-v0_baseline", 1.0),
-        ("MIKASA-Robo-TFDS/RememberColor9-v0_baseline", 1.0),
+        ("mikasa_robo_tfds/RememberColor3-v0_baseline", 1.0),
+        ("mikasa_robo_tfds/RememberColor9-v0_baseline", 1.0),
     ],
     "mikasa_remember_color_mix": [
-        ("MIKASA-Robo-TFDS/RememberColor3-v0", 1.0),
-        ("MIKASA-Robo-TFDS/RememberColor3-v0_baseline", 1.0),
-        ("MIKASA-Robo-TFDS/RememberColor5-v0", 1.0),
-        ("MIKASA-Robo-TFDS/RememberColor9-v0", 1.0),
-        ("MIKASA-Robo-TFDS/RememberColor9-v0_baseline", 1.0),
+        ("mikasa_robo_tfds/RememberColor3-v0", 1.0),
+        ("mikasa_robo_tfds/RememberColor3-v0_baseline", 1.0),
+        ("mikasa_robo_tfds/RememberColor5-v0", 1.0),
+        ("mikasa_robo_tfds/RememberColor9-v0", 1.0),
+        ("mikasa_robo_tfds/RememberColor9-v0_baseline", 1.0),
     ],
     "mikasa_mix": [
         (dataset_name, 1.0) for dataset_name in
-        OXE_DATASET_CONFIGS.keys() if "MIKASA" in dataset_name
+        OXE_DATASET_CONFIGS.keys() if "mikasa_robo_tfds/" in dataset_name
     ]
 }
 # fmt: on
