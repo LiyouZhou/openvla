@@ -679,8 +679,42 @@ OXE_DATASET_CONFIGS = {
     },
 }
 
-OXE_DATASET_CONFIGS["mikasa_robo_baseline_tfds"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
-OXE_DATASET_CONFIGS["mikasa_robo_tfds/RememberColor3-v0"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
-OXE_DATASET_CONFIGS["mikasa_robo_tfds/RememberColor9-v0"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
-OXE_DATASET_CONFIGS["mikasa_robo_tfds/RememberColor3-v0_baseline"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
-OXE_DATASET_CONFIGS["mikasa_robo_tfds/RememberColor9-v0_baseline"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]
+MIKASA_ROBO_TFDS_TASKS = [
+    "ShellGameTouch-v0",
+    "ShellGamePush-v0",
+    "ShellGamePick-v0",
+    "InterceptSlow-v0",
+    "InterceptMedium-v0",
+    "InterceptFast-v0",
+    "InterceptGrabSlow-v0",
+    "InterceptGrabMedium-v0",
+    "InterceptGrabFast-v0",
+    "RotateLenientPos-v0",
+    "RotateLenientPosNeg-v0",
+    "RotateStrictPos-v0",
+    "RotateStrictPosNeg-v0",
+    "TakeItBack-v0",
+    "RememberColor3-v0",
+    "RememberColor5-v0",
+    "RememberColor9-v0",
+    "RememberShape3-v0",
+    "RememberShape5-v0",
+    "RememberShape9-v0",
+    "RememberShapeAndColor3x2-v0",
+    "RememberShapeAndColor3x3-v0",
+    "RememberShapeAndColor5x3-v0",
+    "BunchOfColors3-v0",
+    "BunchOfColors5-v0",
+    "BunchOfColors7-v0",
+    "SeqOfColors3-v0",
+    "SeqOfColors5-v0",
+    "SeqOfColors7-v0",
+    "ChainOfColors3-v0",
+    "ChainOfColors5-v0",
+    "ChainOfColors7-v0",
+    "RememberColor3-v0_baseline",
+    "RememberColor9-v0_baseline",
+]
+
+for task_name in MIKASA_ROBO_TFDS_TASKS:
+    OXE_DATASET_CONFIGS[f"MIKASA-Robo-TFDS/{task_name}"] = OXE_DATASET_CONFIGS["mikasa_robo_tfds"]

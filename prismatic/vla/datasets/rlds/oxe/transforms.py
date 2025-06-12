@@ -27,6 +27,7 @@ from prismatic.vla.datasets.rlds.utils.data_utils import (
     rel2abs_gripper_actions,
     relabel_bridge_actions,
 )
+from prismatic.vla.datasets.rlds.oxe.configs import OXE_DATASET_CONFIGS
 
 
 def bridge_oxe_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
@@ -925,10 +926,8 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     "libero_object_no_noops": libero_dataset_transform,
     "libero_goal_no_noops": libero_dataset_transform,
     "libero_10_no_noops": libero_dataset_transform,
-    "mikasa_robo_tfds": mikasa_dataset_transform,
-    "mikasa_robo_baseline_tfds": mikasa_dataset_transform,
-    "mikasa_robo_tfds/RememberColor3-v0": mikasa_dataset_transform,
-    "mikasa_robo_tfds/RememberColor9-v0": mikasa_dataset_transform,
-    "mikasa_robo_tfds/RememberColor3-v0_baseline": mikasa_dataset_transform,
-    "mikasa_robo_tfds/RememberColor9-v0_baseline": mikasa_dataset_transform,
 }
+
+OXE_STANDARDIZATION_TRANSFORMS.update(
+    {dataset_name: mikasa_dataset_transform for dataset_name in OXE_DATASET_CONFIGS.keys() if "MIKASA" in dataset_name}
+)
