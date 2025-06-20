@@ -446,6 +446,8 @@ def finetune(cfg: FinetuneConfig) -> None:
     recent_losses = deque(maxlen=cfg.grad_accumulation_steps)
     recent_action_accuracies = deque(maxlen=cfg.grad_accumulation_steps)
     recent_l1_losses = deque(maxlen=cfg.grad_accumulation_steps)
+    recent_token_l1_losses = deque(maxlen=cfg.grad_accumulation_steps)
+    recent_cross_entropy_losses = deque(maxlen=cfg.grad_accumulation_steps)
 
     last_validation_gradiant_step_idx = 0
     last_save_gradiant_step_idx = 0
@@ -464,6 +466,32 @@ def finetune(cfg: FinetuneConfig) -> None:
                 )
                 loss = output.loss
 
+            # calculate l1 loss on action tokens
+            def softargmax1d(input, beta=100):
+                """Based on https://github.com/david-wb/softargmax"""
+                *_, n = input.shape
+                input = torch.nn.functional.softmax(beta * input, dim=-1)
+                indices = torch.linspace(0, 1, n).to(input.device)
+                result = torch.sum((n - 1) * input * indices, dim=-1)
+                return result
+
+            # Get action ground truth tokens
+            action_gt = batch["labels"][:, 1:].to(device_id)
+            mask = action_gt > action_tokenizer.action_token_begin_idx
+
+            # Compute a differentiable argmax over action logits
+            action_logits = output.logits[:, vla.module.vision_backbone.featurizer.patch_embed.num_patches : -1]
+            action_preds = softargmax1d(action_logits[mask])
+
+            # Compute L1 loss on predicted action tokens
+            token_l1_loss = torch.nn.functional.l1_loss(action_preds, action_gt[mask])
+            token_l1_loss /= 100
+            token_l1_loss = token_l1_loss.clamp(0.0, 1.0)  # Clamp to [0, 1] to avoid exploding gradients
+
+            # Add to existing cross-entropy loss
+            cross_entropy_loss = output.loss
+            loss += token_l1_loss
+
             # Normalize loss to account for gradient accumulation
             normalized_loss = loss / cfg.grad_accumulation_steps
 
@@ -475,6 +503,8 @@ def finetune(cfg: FinetuneConfig) -> None:
             recent_losses.append(loss.item())
             recent_action_accuracies.append(action_accuracy.item())
             recent_l1_losses.append(action_l1_loss.item())
+            recent_token_l1_losses.append(token_l1_loss.item())
+            recent_cross_entropy_losses.append(cross_entropy_loss.item())
 
             # Compute gradient step index
             gradient_step_idx = batch_idx // cfg.grad_accumulation_steps + cfg.start_step
@@ -485,6 +515,8 @@ def finetune(cfg: FinetuneConfig) -> None:
             smoothened_loss = sum(recent_losses) / len(recent_losses)
             smoothened_action_accuracy = sum(recent_action_accuracies) / len(recent_action_accuracies)
             smoothened_l1_loss = sum(recent_l1_losses) / len(recent_l1_losses)
+            smoothened_token_l1_loss = sum(recent_token_l1_losses) / len(recent_token_l1_losses)
+            smoothened_cross_entropy_loss = sum(recent_cross_entropy_losses) / len(recent_cross_entropy_losses)
 
             # Push Metrics to W&B (every 10 gradient steps)
             if distributed_state.is_main_process and gradient_step_idx % 10 == 0:
@@ -493,6 +525,8 @@ def finetune(cfg: FinetuneConfig) -> None:
                         "train_loss": smoothened_loss,
                         "action_accuracy": smoothened_action_accuracy,
                         "l1_loss": smoothened_l1_loss,
+                        "token_l1_loss": smoothened_token_l1_loss,
+                        "cross_entropy_loss": smoothened_cross_entropy_loss,
                     },
                     step=gradient_step_idx,
                 )
