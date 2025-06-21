@@ -119,6 +119,10 @@ class FinetuneConfig:
     start_step: int = 0
     # fmt: on
 
+    cross_entropy_loss: bool = True
+    token_l1_loss: bool = False
+    token_l1_loss_scale_factor: int = 50
+
 
 def log_metrics_to_wandb(metrics, prefix, step, wandb_entity) -> None:
     """
@@ -464,7 +468,7 @@ def finetune(cfg: FinetuneConfig) -> None:
                     pixel_values=batch["pixel_values"].to(torch.bfloat16).to(device_id),
                     labels=batch["labels"],
                 )
-                loss = output.loss
+                cross_entropy_loss = output.loss
 
             # calculate l1 loss on action tokens
             def softargmax1d(input, beta=100):
@@ -485,12 +489,21 @@ def finetune(cfg: FinetuneConfig) -> None:
 
             # Compute L1 loss on predicted action tokens
             token_l1_loss = torch.nn.functional.l1_loss(action_preds, action_gt[mask])
-            token_l1_loss /= 100
+            token_l1_loss /= cfg.token_l1_loss
             token_l1_loss = token_l1_loss.clamp(0.0, 1.0)  # Clamp to [0, 1] to avoid exploding gradients
 
-            # Add to existing cross-entropy loss
-            cross_entropy_loss = output.loss
-            loss += token_l1_loss
+            # set loss according to configuration
+            losses = []
+            if cfg.token_l1_loss:
+                losses.append(token_l1_loss)
+            if cfg.cross_entropy_loss:
+                losses.append(cross_entropy_loss)
+
+            # Combine losses
+            if len(losses) >= 1:
+                loss = sum(losses)
+            elif len(losses) == 0:
+                raise ValueError("No losses to combine! Check your configuration.")
 
             # Normalize loss to account for gradient accumulation
             normalized_loss = loss / cfg.grad_accumulation_steps
