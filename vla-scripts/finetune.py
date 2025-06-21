@@ -147,14 +147,14 @@ def log_metrics_to_wandb(metrics, prefix, step, wandb_entity) -> None:
 def compute_metrics(
     vla,
     action_tokenizer,
-    batch,
-    output: CausalLMOutputWithPast,
+    labels,
+    logits,
 ):
 
     # Compute Accuracy and L1 Loss for Logging
-    action_logits = output.logits[:, vla.module.vision_backbone.featurizer.patch_embed.num_patches : -1]
+    action_logits = logits[:, vla.module.vision_backbone.featurizer.patch_embed.num_patches : -1]
     action_preds = action_logits.argmax(dim=2)
-    action_gt = batch["labels"][:, 1:].to(action_preds.device)
+    action_gt = labels[:, 1:].to(action_preds.device)
     mask = action_gt > action_tokenizer.action_token_begin_idx
 
     # Compute Accuracy
@@ -201,7 +201,7 @@ def run_forward_pass(
 
     metrics = {}
     metrics["loss_value"] = loss.item()
-    action_l1_loss, action_accuracy = compute_metrics(vla, action_tokenizer, batch, output)
+    action_l1_loss, action_accuracy = compute_metrics(vla, action_tokenizer, batch["labels"], output.logits)
     metrics["action_accuracy"] = action_accuracy.item()
     metrics["l1_loss"] = action_l1_loss.item()
 
@@ -499,7 +499,7 @@ def finetune(cfg: FinetuneConfig) -> None:
             normalized_loss.backward()
 
             # Store recent train metrics
-            action_l1_loss, action_accuracy = compute_metrics(vla, action_tokenizer, batch, output)
+            action_l1_loss, action_accuracy = compute_metrics(vla, action_tokenizer, batch["labels"], output.logits)
             recent_losses.append(loss.item())
             recent_action_accuracies.append(action_accuracy.item())
             recent_l1_losses.append(action_l1_loss.item())
@@ -508,6 +508,28 @@ def finetune(cfg: FinetuneConfig) -> None:
 
             # Compute gradient step index
             gradient_step_idx = batch_idx // cfg.grad_accumulation_steps + cfg.start_step
+
+            # calculate per task metrics
+            for task in set(batch["dataset_names"]):
+                task_mask = [idx for idx, x in enumerate(batch["dataset_names"]) if x == task]
+
+                task_action_l1_loss, task_action_accuracy = compute_metrics(
+                    vla=vla,
+                    action_tokenizer=action_tokenizer,
+                    labels=batch["labels"][task_mask],
+                    logits=output.logits[task_mask],
+                )
+
+                log_metrics_to_wandb(
+                    metrics={
+                        "l1_loss": task_action_l1_loss,
+                        "action_accuracy": task_action_accuracy,
+                        "loss": loss.item(),
+                    },
+                    prefix=f"Task/{task.decode('utf-8')}",
+                    step=gradient_step_idx,
+                    wandb_entity=wandb,
+                )
 
             # Compute smoothened train metrics
             #   =>> Equal to current step metrics when not using gradient accumulation
