@@ -489,7 +489,7 @@ def finetune(cfg: FinetuneConfig) -> None:
 
             # Compute L1 loss on predicted action tokens
             token_l1_loss = torch.nn.functional.l1_loss(action_preds, action_gt[mask])
-            token_l1_loss /= cfg.token_l1_loss
+            token_l1_loss /= cfg.token_l1_loss_scale_factor
             token_l1_loss = token_l1_loss.clamp(0.0, 1.0)  # Clamp to [0, 1] to avoid exploding gradients
 
             # set loss according to configuration
