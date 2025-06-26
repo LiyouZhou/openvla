@@ -17,6 +17,7 @@ Usage:
         --wandb_entity <ENTITY>
 """
 
+from collections import defaultdict
 import os
 import sys
 from dataclasses import dataclass
@@ -37,8 +38,6 @@ from prismatic.util.data_utils import PaddedCollatorForActionPrediction
 from prismatic.vla.action_tokenizer import ActionTokenizer
 from prismatic.vla.datasets.datasets import RLDSBatchTransform
 
-from transformers.modeling_outputs import CausalLMOutputWithPast
-
 # Append current directory so that interpreter can find experiments.robot
 sys.path.append("../..")
 from experiments.robot.openvla_utils import get_processor
@@ -57,6 +56,8 @@ from experiments.robot.openvla_utils import crop_and_resize
 import tensorflow as tf
 from PIL import Image
 import imageio
+import numpy as np
+import plotly.graph_objects as go          # or: import plotly.graph_objs as go
 
 
 def save_rollout_video(rollout_images, idx, success, task_description, log_file=None):
@@ -364,9 +365,13 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
 
     # Start evaluation
     total_episodes, total_successes = 0, 0
+    plot_data = {}
+
     for task_id in tqdm.tqdm(range(num_tasks_in_suite)):
         env_name = TEST_SUITES[cfg.task_suite_name]["tasks"][task_id]["env_name"]
         task_name = TEST_SUITES[cfg.task_suite_name]["tasks"][task_id]["task_name"]
+
+        plot_data[task_name] = defaultdict(list)
         print(f"Running task {task_name}...")
         num_envs = cfg.num_envs
         env_kwargs_rgb = dict(
@@ -509,18 +514,16 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
                         f"rollout_video/{task_name}" if colors is None else f"rollout_video/{task_name}/{colors[i]}"
                     )
 
-                    plot_data["episode_idx"].append(task_episodes - 1)
-                    plot_data["success"].append(success_flags[i])
-                    plot_data["distance_to_target"].append(final_distances[i])
-                    plot_data["reward"].append(final_rewards[i])
+                    plot_data[task_name]["episode_idx"].append(task_episodes - 1)
+                    plot_data[task_name]["success"].append(success_flags[i])
+                    plot_data[task_name]["distance_to_target"].append(final_distances[i])
+                    plot_data[task_name]["reward"].append(final_rewards[i])
 
                     wandb.log(
                         {
                             rollout_video_topic: wandb.Video(mp4_path, format="mp4"),
-                            f"task/{task_name}/success": success_flags[i],
                             f"task/{task_name}/distance_to_target": final_distances[i],
                             f"task/{task_name}/reward": final_rewards[i],
-                            f"task/{task_name}/task_name": task_name,
                             f"task/{task_name}/episode_idx": task_episodes - 1,
                         },
                     )
@@ -551,13 +554,66 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
         log_file.write(f"Average Reward: {average_reward}\n")
         log_file.flush()
         if cfg.use_wandb:
+            def create_boxplot(metric_name: str, plot_data_key: str):
+                """Return a Plotly Figure with grouped box-and-whisker plots."""
+                labels = list(plot_data.keys())
+
+                fig = go.Figure()
+
+                # one trace per label keeps colours & hover labels tidy
+                for lbl in labels:
+                    fig.add_trace(
+                        go.Box(
+                            y=plot_data[lbl][plot_data_key],
+                            name=lbl,
+                            boxpoints="outliers"      # show outliers, mimic Matplotlib default
+                        )
+                    )
+
+                fig.update_layout(
+                    xaxis_title=metric_name,
+                    boxmode="group",                 # group traces side-by-side
+                    height=300, width=400,
+                    margin=dict(l=40, r=20, t=20, b=60),
+                    template="simple_white"          # clean background like most Matplotlib styles
+                )
+                return fig
+
+
+            def create_bar_plot(
+                metric_name: str,
+                plot_data_key: str,
+                agg_fn=np.mean                         # same default as before
+            ):
+                """Return a Plotly Figure with a bar chart of aggregated values."""
+                labels = list(plot_data.keys())
+                values = [agg_fn(plot_data[lbl][plot_data_key]) for lbl in labels]
+
+                fig = go.Figure(
+                    data=[go.Bar(x=labels, y=values)]
+                )
+
+                fig.update_layout(
+                    xaxis_title=metric_name,
+                    yaxis_title=agg_fn.__name__.capitalize(),
+                    height=300, width=400,
+                    margin=dict(l=40, r=20, t=20, b=60),
+                    template="simple_white"
+                )
+                fig.update_xaxes(tickangle=45)
+
+                return fig
+
             wandb.log(
                 {
-                    f"task_summary/success_rate": float(task_successes) / float(task_episodes),
-                    f"task_summary/num_episodes": task_episodes,
-                    f"task_summary/average_distance": avg_dist_to_target,
-                    f"task_summary/average_reward": average_reward,
-                    f"task_summary/task_name": task_name,
+                    "task_summary/reward_plot": create_boxplot("Reward", plot_data_key="reward"),
+                    "task_summary/success_rate_plot": create_bar_plot("Success Rate", plot_data_key="success"),
+                    "task_summary/distance_to_target_plot": create_boxplot(
+                        "Distance to Target", plot_data_key="distance_to_target"
+                    ),
+                    "task_summary/task_episodes": create_bar_plot(
+                        "Task Episodes", plot_data_key="reward", agg_fn=lambda x: len(x)
+                    ),
                 }
             )
 
