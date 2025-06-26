@@ -120,21 +120,93 @@ class GenerateConfig:
     # fmt: on
 
 
+# fmt: off
+PROMPT_TEMPLATE_SHELL_GAME_TOUCH = "Memorize the position of the ball, then touch the cup with ball."
+PROMPT_TEMPLATE_SHELL_GAME_PUSH = "Memorize the position of the ball, then push the cup with ball."
+PROMPT_TEMPLATE_SHELL_GAME_PICK = "Memorize the position of the ball, then pick up the cup with ball."
+PROMPT_TEMPLATE_INTERCEPT = "Intercept the rolling ball and guide it towards the target."
+PROMPT_TEMPLATE_INTERCEPT_GRAB = "Intercept the rolling ball. Then catch the ball with the gripper and lift it up."
+PROMPT_TEMPLATE_ROTATE_LENIENT = "Memorize the initial position of the peg and rotate it back to its initial position."
+PROMPT_TEMPLATE_ROTATE_STRICT = "Memorize the initial position of the peg and rotate it back to its initial position without shifting its center."
+PROMPT_TEMPLATE_TAKE_IT_BACK = "Memorize the initial position of the cube, move it to the target region, and then return it to its initial position."
+PROMPT_TEMPLATE_REMEMBER_COLOR = "Memorize the the colors of the cube shown on the table, and then touch the same coloured cube out of all the cubes."
+PROMPT_TEMPLATE_REMEMBER_SHAPE = "Memorize the the shapes of the block shown on the table, and then touch the same shaped blocks."
+PROMPT_TEMPLATE_REMEMBER_SHAPE_AND_COLOR = "Memorize the shape and color of the blocks shown, and touch the blocks with the same shape and color."
+PROMPT_TEMPLATE_BUNCH_OF_COLORS = "Remember colors of the blocks shown at the begining, touch the same colored blocks in any order."
+PROMPT_TEMPLATE_SEQ_OF_COLORS = "Remember the colors of the set of cubes shown sequentially and then touch them in any order."
+PROMPT_TEMPLATE_CHAIN_OF_COLORS = "Remember the colors of the set of cubes shown sequentially and then select them in the same order as shown."
+# fmt: on
+
+TASK_PROMPTS = {
+    "ShellGameTouch-v0": PROMPT_TEMPLATE_SHELL_GAME_TOUCH,
+    "ShellGamePush-v0": PROMPT_TEMPLATE_SHELL_GAME_PUSH,
+    "ShellGamePick-v0": PROMPT_TEMPLATE_SHELL_GAME_PICK,
+    "InterceptSlow-v0": PROMPT_TEMPLATE_INTERCEPT,
+    "InterceptMedium-v0": PROMPT_TEMPLATE_INTERCEPT,
+    "InterceptFast-v0": PROMPT_TEMPLATE_INTERCEPT,
+    "InterceptGrabSlow-v0": PROMPT_TEMPLATE_INTERCEPT_GRAB,
+    "InterceptGrabMedium-v0": PROMPT_TEMPLATE_INTERCEPT_GRAB,
+    "InterceptGrabFast-v0": PROMPT_TEMPLATE_INTERCEPT_GRAB,
+    "RotateLenientPos-v0": PROMPT_TEMPLATE_ROTATE_LENIENT,
+    "RotateLenientPosNeg-v0": PROMPT_TEMPLATE_ROTATE_LENIENT,
+    "RotateStrictPos-v0": PROMPT_TEMPLATE_ROTATE_STRICT,
+    "RotateStrictPosNeg-v0": PROMPT_TEMPLATE_ROTATE_STRICT,
+    "TakeItBack-v0": PROMPT_TEMPLATE_TAKE_IT_BACK,
+    "RememberColor3-v0": PROMPT_TEMPLATE_REMEMBER_COLOR,
+    "RememberColor5-v0": PROMPT_TEMPLATE_REMEMBER_COLOR,
+    "RememberColor9-v0": PROMPT_TEMPLATE_REMEMBER_COLOR,
+    "RememberShape3-v0": PROMPT_TEMPLATE_REMEMBER_SHAPE,
+    "RememberShape5-v0": PROMPT_TEMPLATE_REMEMBER_SHAPE,
+    "RememberShape9-v0": PROMPT_TEMPLATE_REMEMBER_SHAPE,
+    "RememberShapeAndColor3x2-v0": PROMPT_TEMPLATE_REMEMBER_SHAPE,
+    "RememberShapeAndColor3x3-v0": PROMPT_TEMPLATE_REMEMBER_SHAPE,
+    "RememberShapeAndColor5x3-v0": PROMPT_TEMPLATE_REMEMBER_SHAPE,
+    "BunchOfColors3-v0": PROMPT_TEMPLATE_BUNCH_OF_COLORS,
+    "BunchOfColors5-v0": PROMPT_TEMPLATE_BUNCH_OF_COLORS,
+    "BunchOfColors7-v0": PROMPT_TEMPLATE_BUNCH_OF_COLORS,
+    "SeqOfColors3-v0": PROMPT_TEMPLATE_SEQ_OF_COLORS,
+    "SeqOfColors5-v0": PROMPT_TEMPLATE_SEQ_OF_COLORS,
+    "SeqOfColors7-v0": PROMPT_TEMPLATE_SEQ_OF_COLORS,
+    "ChainOfColors3-v0": PROMPT_TEMPLATE_CHAIN_OF_COLORS,
+    "ChainOfColors5-v0": PROMPT_TEMPLATE_CHAIN_OF_COLORS,
+    "ChainOfColors7-v0": PROMPT_TEMPLATE_CHAIN_OF_COLORS,
+}
+
 TEST_SUITES = {
     "mikasa": {
         "tasks": [
             {
-                "task_name": "RememberColor3-v0",
-                "env_name": "RememberColor3-v0",
-                "baseline_prompt": False,
-            },
-            {
                 "task_name": "RememberColor3-v0_baseline",
                 "env_name": "RememberColor3-v0",
                 "baseline_prompt": True,
+                "prompt": "Touch the red cube.",
             },
-        ],
+            {
+                "task_name": "RememberColor9-v0_baseline",
+                "env_name": "RememberColor9-v0",
+                "baseline_prompt": True,
+                "prompt": "Touch the red cube.",
+            },
+        ]
     }
+}
+
+for task_name, prompt in TASK_PROMPTS.items():
+    TEST_SUITES["mikasa"]["tasks"].append(
+        {
+            "task_name": task_name,
+            "env_name": task_name,
+            "baseline_prompt": False,
+            "prompt": prompt,
+        }
+    )
+
+TEST_SUITES["mikasa_remember_color"] = {
+    "tasks": [task for task in TEST_SUITES["mikasa"]["tasks"] if "RememberColor" in task["task_name"]]
+}
+
+TEST_SUITES["mikasa_baseline"] = {
+    "tasks": [task for task in TEST_SUITES["mikasa"]["tasks"] if "baseline" in task["task_name"]]
 }
 
 
@@ -221,7 +293,7 @@ def infer_batch(images, prompts, model, processor, unnorm_key, crop_scale=0.9):
         images = [center_crop(image, crop_scale=crop_scale, return_pil_image=True) for image in images]
 
     # Process inputs.
-    input = processor(prompts, images).to("cuda", dtype=torch.bfloat16)
+    input = processor(prompts, images, padding=True).to("cuda", dtype=torch.bfloat16)
 
     # Get action.
     actions = [
@@ -325,16 +397,21 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
             # Reset environment
             obs, info = env.reset()
 
-            oracle_info = [int(x) for x in info["oracle_info"].cpu()]
-            colors = [["red", "green", "blue"][x] for x in oracle_info]
-            prompts = [
-                (
-                    f"Touch the {color} cube"
-                    if TEST_SUITES[cfg.task_suite_name]["tasks"][task_id]["baseline_prompt"]
-                    else "Memorize the the colors of the cube shown on the table, and then touch the same coloured cube out of all the cubes."
-                )
-                for color in colors
-            ]
+            colors = None
+            if TEST_SUITES[cfg.task_suite_name]["tasks"][task_id]["baseline_prompt"]:
+                oracle_info = [int(x) for x in info["oracle_info"].cpu()]
+
+                if "RememberColor3" in env_name:
+                    colors = [["red", "green", "blue"][x] for x in oracle_info]
+                elif "RememberColor9" in env_name:
+                    # 7 orange, 4 pink, 8 teal, 0 red, 6 maroon, 2 blue, 5 cyan, 3 yellow, 1 green
+                    colors = [
+                        ["red", "green", "blue", "yellow", "purple", "cyan", "maroon", "orange", "teal"][x]
+                        for x in oracle_info
+                    ]
+                prompts = [f"Touch the {color} cube" for color in colors]
+            else:
+                prompts = [TEST_SUITES[cfg.task_suite_name]["tasks"][task_id]["prompt"]] * num_envs
 
             log_file.write(f"\nTask: {prompts}\n")
 
@@ -387,11 +464,17 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
                     if terminated[i].cpu().numpy():
                         terminated_flags[i] = True
                         final_rewards[i] = reward[i].cpu().numpy()
-                        final_distances[i] = info["reward_dict"]["tcp_to_obj_dist"][i].cpu().numpy()
+                        if "reward_dict" in info and "tcp_to_obj_dist" in info["reward_dict"]:
+                            final_distances[i] = info["reward_dict"]["tcp_to_obj_dist"][i].cpu().numpy()
+                        else:
+                            final_distances[i] = -1
                     if truncated[i].cpu().numpy():
                         truncated_flags[i] = True
                         final_rewards[i] = reward[i].cpu().numpy()
-                        final_distances[i] = info["reward_dict"]["tcp_to_obj_dist"][i].cpu().numpy()
+                        if "reward_dict" in info and "tcp_to_obj_dist" in info["reward_dict"]:
+                            final_distances[i] = info["reward_dict"]["tcp_to_obj_dist"][i].cpu().numpy()
+                        else:
+                            final_distances[i] = -1
                     if info["success"][i].cpu().numpy():
                         success_flags[i] = True
 
@@ -422,14 +505,24 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
                 )
 
                 if cfg.use_wandb:
+                    rollout_video_topic = (
+                        f"rollout_video/{task_name}" if colors is None else f"rollout_video/{task_name}/{colors[i]}"
+                    )
+
+                    plot_data["episode_idx"].append(task_episodes - 1)
+                    plot_data["success"].append(success_flags[i])
+                    plot_data["distance_to_target"].append(final_distances[i])
+                    plot_data["reward"].append(final_rewards[i])
+
                     wandb.log(
                         {
-                            f"rollout_video/{task_name}/{colors[i]}": wandb.Video(mp4_path, format="mp4"),
-                            f"sucess": success_flags[i],
-                            f"distance_to_target": final_distances[i],
-                            f"reward": final_rewards[i],
-                            f"episode_idx": task_episodes - 1,
-                        }
+                            rollout_video_topic: wandb.Video(mp4_path, format="mp4"),
+                            f"task/{task_name}/success": success_flags[i],
+                            f"task/{task_name}/distance_to_target": final_distances[i],
+                            f"task/{task_name}/reward": final_rewards[i],
+                            f"task/{task_name}/task_name": task_name,
+                            f"task/{task_name}/episode_idx": task_episodes - 1,
+                        },
                     )
 
                 dist_to_target.append(final_distances[i])
@@ -460,10 +553,11 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
         if cfg.use_wandb:
             wandb.log(
                 {
-                    f"{env_name}/success_rate": float(task_successes) / float(task_episodes),
-                    f"{env_name}/num_episodes": task_episodes,
-                    f"{env_name}/average_distance": avg_dist_to_target,
-                    f"{env_name}/average_reward": average_reward,
+                    f"task_summary/success_rate": float(task_successes) / float(task_episodes),
+                    f"task_summary/num_episodes": task_episodes,
+                    f"task_summary/average_distance": avg_dist_to_target,
+                    f"task_summary/average_reward": average_reward,
+                    f"task_summary/task_name": task_name,
                 }
             )
 
@@ -474,8 +568,8 @@ def eval_mikasa(cfg: GenerateConfig) -> None:
     if cfg.use_wandb:
         wandb.log(
             {
-                "success_rate/total": float(total_successes) / float(total_episodes),
-                "num_episodes/total": total_episodes,
+                "total/success_rate": float(total_successes) / float(total_episodes),
+                "total/num_episodes": total_episodes,
             }
         )
         wandb.save(local_log_filepath)
