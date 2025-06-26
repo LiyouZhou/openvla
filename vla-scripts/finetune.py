@@ -522,27 +522,28 @@ def finetune(cfg: FinetuneConfig) -> None:
             # Compute gradient step index
             gradient_step_idx = batch_idx // cfg.grad_accumulation_steps + cfg.start_step
 
-            # calculate per task metrics
-            for task in set(batch["dataset_names"]):
-                task_mask = [idx for idx, x in enumerate(batch["dataset_names"]) if x == task]
+            # calculate and log per task metrics
+            if distributed_state.is_main_process:
+                for task in set(batch["dataset_names"]):
+                    task_mask = [idx for idx, x in enumerate(batch["dataset_names"]) if x == task]
 
-                task_action_l1_loss, task_action_accuracy = compute_metrics(
-                    vla=vla,
-                    action_tokenizer=action_tokenizer,
-                    labels=batch["labels"][task_mask],
-                    logits=output.logits[task_mask],
-                )
+                    task_action_l1_loss, task_action_accuracy = compute_metrics(
+                        vla=vla,
+                        action_tokenizer=action_tokenizer,
+                        labels=batch["labels"][task_mask],
+                        logits=output.logits[task_mask],
+                    )
 
-                log_metrics_to_wandb(
-                    metrics={
-                        "l1_loss": task_action_l1_loss,
-                        "action_accuracy": task_action_accuracy,
-                        "loss": loss.item(),
-                    },
-                    prefix=f"Task/{task.decode('utf-8')}",
-                    step=gradient_step_idx,
-                    wandb_entity=wandb,
-                )
+                    log_metrics_to_wandb(
+                        metrics={
+                            "l1_loss": task_action_l1_loss,
+                            "action_accuracy": task_action_accuracy,
+                            "loss": loss.item(),
+                        },
+                        prefix=f"Task/{task.decode('utf-8')}",
+                        step=gradient_step_idx,
+                        wandb_entity=wandb,
+                    )
 
             # Compute smoothened train metrics
             #   =>> Equal to current step metrics when not using gradient accumulation
