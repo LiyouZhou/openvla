@@ -624,6 +624,7 @@ def finetune(cfg: FinetuneConfig) -> None:
                 gradient_step_idx > 0
                 and gradient_step_idx % cfg.val_frequency == 0
                 and last_validation_gradiant_step_idx != gradient_step_idx
+                and distributed_state.is_main_process
             ):
                 last_validation_gradiant_step_idx = gradient_step_idx
                 run_validation(
