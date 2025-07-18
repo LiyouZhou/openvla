@@ -1,0 +1,205 @@
+Loading rhel8/default-amp
+  Loading requirement: rhel8/slurm singularity/current rhel8/global cuda/11.4
+    libpciaccess/0.16/gcc-9.4.0-6fonbj6 libiconv/1.16/gcc-9.4.0-ahebbov
+    libxml2/2.9.12/gcc-9.4.0-gnknt5e ncurses/6.2/gcc-9.4.0-aiirok7
+    hwloc/2.5.0/gcc-9.4.0-7sqomga libevent/2.1.12/gcc-9.4.0-hgny7cm
+    numactl/2.0.14/gcc-9.4.0-52dwc6n cuda/11.4.0/gcc-9.4.0-3hnxhjt
+    gdrcopy/2.2/gcc-9.4.0-e4igtfp knem/1.1.4/gcc-9.4.0-bpbxgva
+    libnl/3.3.0/gcc-9.4.0-whwhrwb rdma-core/34.0/gcc-9.4.0-5eo5n2u
+    ucx/1.11.1/gcc-9.4.0-lktqyl4 openmpi/4.1.1/gcc-9.4.0-epagguv
+Changed directory to /rds/user/lz307/hpc-work/openvla.
+
+JobID: 10992187
+======
+Time: Thu 12 Jun 01:11:00 BST 2025
+Running on master node: gpu-q-35
+Current directory: /rds/user/lz307/hpc-work/openvla
+
+Nodes allocated:
+================
+gpu-q-35
+
+numtasks=4, numnodes=1, mpi_tasks_per_node=4 (OMP_NUM_THREADS=1)
+
+Executing command:
+==================
+/home/lz307/rds/hpc-work/openvla/fine_tune_mikasa.sh 
+
+2025-06-12 01:12:59.619255: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-06-12 01:12:59.619288: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-06-12 01:12:59.619337: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-06-12 01:12:59.619342: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-06-12 01:12:59.621493: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-06-12 01:12:59.621512: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-06-12 01:12:59.621524: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-06-12 01:12:59.621536: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-06-12 01:13:00.084890: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-12 01:13:00.084912: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-12 01:13:00.084948: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-12 01:13:00.084939: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-12 01:13:02.155804: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-12 01:13:02.155880: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-12 01:13:02.155889: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-12 01:13:02.155909: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-12 01:13:44.445299: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-06-12 01:13:44.445301: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-06-12 01:13:44.445319: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-06-12 01:13:44.445322: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 44, in <module>
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+      File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 44, in <module>
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 44, in <module>
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 44, in <module>
+from prismatic.models.backbones.llm.prompting import PurePromptBuilder, VicunaV15ChatPromptBuilder
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/__init__.py", line 1, in <module>
+        from prismatic.models.backbones.llm.prompting import PurePromptBuilder, VicunaV15ChatPromptBuilder    from prismatic.models.backbones.llm.prompting import PurePromptBuilder, VicunaV15ChatPromptBuilder
+from prismatic.models.backbones.llm.prompting import PurePromptBuilder, VicunaV15ChatPromptBuilder
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/__init__.py", line 1, in <module>
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/__init__.py", line 1, in <module>
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/__init__.py", line 1, in <module>
+    from .models import available_model_names, available_models, get_model_description, load
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/__init__.py", line 1, in <module>
+    from .models import available_model_names, available_models, get_model_description, load    
+from .models import available_model_names, available_models, get_model_description, load  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/__init__.py", line 1, in <module>
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/__init__.py", line 1, in <module>
+    from .models import available_model_names, available_models, get_model_description, load
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/__init__.py", line 1, in <module>
+    from .load import available_model_names, available_models, get_model_description, load, load_vla    
+    from .load import available_model_names, available_models, get_model_description, load, load_vla  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/load.py", line 18, in <module>
+from .load import available_model_names, available_models, get_model_description, load, load_vla
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/load.py", line 18, in <module>
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/load.py", line 18, in <module>
+    from .load import available_model_names, available_models, get_model_description, load, load_vla
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/load.py", line 18, in <module>
+    from prismatic.models.vlas import OpenVLA
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/vlas/__init__.py", line 1, in <module>
+        from prismatic.models.vlas import OpenVLAfrom prismatic.models.vlas import OpenVLA    
+
+from prismatic.models.vlas import OpenVLA  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/vlas/__init__.py", line 1, in <module>
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/vlas/__init__.py", line 1, in <module>
+    
+from .openvla import OpenVLA  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/vlas/__init__.py", line 1, in <module>
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/vlas/openvla.py", line 17, in <module>
+        from .openvla import OpenVLAfrom .openvla import OpenVLA    
+    
+from prismatic.vla.action_tokenizer import ActionTokenizer  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/vlas/openvla.py", line 17, in <module>
+from .openvla import OpenVLA  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/vlas/openvla.py", line 17, in <module>
+
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/__init__.py", line 1, in <module>
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/models/vlas/openvla.py", line 17, in <module>
+    from prismatic.vla.action_tokenizer import ActionTokenizer
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/__init__.py", line 1, in <module>
+        from prismatic.vla.action_tokenizer import ActionTokenizerfrom .materialize import get_vla_dataset_and_collator
+    
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/__init__.py", line 1, in <module>
+from prismatic.vla.action_tokenizer import ActionTokenizer  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/materialize.py", line 18, in <module>
+
+      File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/__init__.py", line 1, in <module>
+from .materialize import get_vla_dataset_and_collator    
+from .materialize import get_vla_dataset_and_collator  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/materialize.py", line 18, in <module>
+
+      File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/materialize.py", line 18, in <module>
+from .materialize import get_vla_dataset_and_collator
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/materialize.py", line 18, in <module>
+        from prismatic.vla.datasets import EpisodicRLDSDataset, RLDSBatchTransform, RLDSDatasetfrom prismatic.vla.datasets import EpisodicRLDSDataset, RLDSBatchTransform, RLDSDataset
+    
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/__init__.py", line 1, in <module>
+from prismatic.vla.datasets import EpisodicRLDSDataset, RLDSBatchTransform, RLDSDataset  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/__init__.py", line 1, in <module>
+
+      File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/__init__.py", line 1, in <module>
+from prismatic.vla.datasets import EpisodicRLDSDataset, RLDSBatchTransform, RLDSDataset
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/__init__.py", line 1, in <module>
+        from .datasets import DummyDataset, EpisodicRLDSDataset, RLDSBatchTransform, RLDSDatasetfrom .datasets import DummyDataset, EpisodicRLDSDataset, RLDSBatchTransform, RLDSDataset
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/datasets.py", line 23, in <module>
+      File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/datasets.py", line 23, in <module>
+from .datasets import DummyDataset, EpisodicRLDSDataset, RLDSBatchTransform, RLDSDataset
+      File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/datasets.py", line 23, in <module>
+from .datasets import DummyDataset, EpisodicRLDSDataset, RLDSBatchTransform, RLDSDataset
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/datasets.py", line 23, in <module>
+    from prismatic.vla.datasets.rlds.oxe import OXE_NAMED_MIXTURES, get_oxe_dataset_kwargs_and_weights
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/__init__.py", line 2, in <module>
+        from prismatic.vla.datasets.rlds.oxe import OXE_NAMED_MIXTURES, get_oxe_dataset_kwargs_and_weightsfrom prismatic.vla.datasets.rlds.oxe import OXE_NAMED_MIXTURES, get_oxe_dataset_kwargs_and_weights
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/__init__.py", line 2, in <module>
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/__init__.py", line 2, in <module>
+    from prismatic.vla.datasets.rlds.oxe import OXE_NAMED_MIXTURES, get_oxe_dataset_kwargs_and_weights
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/__init__.py", line 2, in <module>
+    from .mixtures import OXE_NAMED_MIXTURES
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/mixtures.py", line 9, in <module>
+    from prismatic.vla.datasets.rlds.oxe.mixtures import OXE_DATASET_CONFIGS
+    ImportError    from .mixtures import OXE_NAMED_MIXTURES:     from .mixtures import OXE_NAMED_MIXTURES
+cannot import name 'OXE_DATASET_CONFIGS' from partially initialized module 'prismatic.vla.datasets.rlds.oxe.mixtures' (most likely due to a circular import) (/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/mixtures.py)from .mixtures import OXE_NAMED_MIXTURES
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/mixtures.py", line 9, in <module>
+
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/mixtures.py", line 9, in <module>
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/mixtures.py", line 9, in <module>
+    from prismatic.vla.datasets.rlds.oxe.mixtures import OXE_DATASET_CONFIGS
+ImportError: cannot import name 'OXE_DATASET_CONFIGS' from partially initialized module 'prismatic.vla.datasets.rlds.oxe.mixtures' (most likely due to a circular import) (/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/mixtures.py)        
+from prismatic.vla.datasets.rlds.oxe.mixtures import OXE_DATASET_CONFIGSfrom prismatic.vla.datasets.rlds.oxe.mixtures import OXE_DATASET_CONFIGS
+
+ImportErrorImportError: : cannot import name 'OXE_DATASET_CONFIGS' from partially initialized module 'prismatic.vla.datasets.rlds.oxe.mixtures' (most likely due to a circular import) (/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/mixtures.py)cannot import name 'OXE_DATASET_CONFIGS' from partially initialized module 'prismatic.vla.datasets.rlds.oxe.mixtures' (most likely due to a circular import) (/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/mixtures.py)
+
+[2025-06-12 01:16:53,317] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 719030) of binary: /rds/user/lz307/hpc-work/openvla/.venv/bin/python
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/.venv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 347, in wrapper
+    return f(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 812, in main
+    run(args)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 803, in run
+    elastic_launch(
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 135, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 268, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+vla-scripts/finetune.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2025-06-12_01:16:53
+  host      : gpu-q-35.data.cluster
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 719031)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2025-06-12_01:16:53
+  host      : gpu-q-35.data.cluster
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 719032)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[3]:
+  time      : 2025-06-12_01:16:53
+  host      : gpu-q-35.data.cluster
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 719033)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-06-12_01:16:53
+  host      : gpu-q-35.data.cluster
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 719030)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

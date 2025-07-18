@@ -1,0 +1,150 @@
+Loading rhel8/default-amp
+  Loading requirement: rhel8/slurm singularity/current rhel8/global cuda/11.4
+    libpciaccess/0.16/gcc-9.4.0-6fonbj6 libiconv/1.16/gcc-9.4.0-ahebbov
+    libxml2/2.9.12/gcc-9.4.0-gnknt5e ncurses/6.2/gcc-9.4.0-aiirok7
+    hwloc/2.5.0/gcc-9.4.0-7sqomga libevent/2.1.12/gcc-9.4.0-hgny7cm
+    numactl/2.0.14/gcc-9.4.0-52dwc6n cuda/11.4.0/gcc-9.4.0-3hnxhjt
+    gdrcopy/2.2/gcc-9.4.0-e4igtfp knem/1.1.4/gcc-9.4.0-bpbxgva
+    libnl/3.3.0/gcc-9.4.0-whwhrwb rdma-core/34.0/gcc-9.4.0-5eo5n2u
+    ucx/1.11.1/gcc-9.4.0-lktqyl4 openmpi/4.1.1/gcc-9.4.0-epagguv
+Changed directory to /rds/user/lz307/hpc-work/openvla.
+
+JobID: 11635176
+======
+Time: Mon 30 Jun 23:49:42 BST 2025
+Running on master node: gpu-q-33
+Current directory: /rds/user/lz307/hpc-work/openvla
+
+Nodes allocated:
+================
+gpu-q-33
+
+numtasks=4, numnodes=1, mpi_tasks_per_node=4 (OMP_NUM_THREADS=1)
+
+Executing command:
+==================
+/home/lz307/rds/hpc-work/openvla/fine_tune_mikasa.sh 
+
+2025-06-30 23:51:32.527979: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-06-30 23:51:32.527979: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-06-30 23:51:32.527986: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-06-30 23:51:32.528029: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-06-30 23:51:32.528890: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-06-30 23:51:32.528897: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-06-30 23:51:32.528899: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-06-30 23:51:32.528907: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-06-30 23:51:32.874569: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-30 23:51:32.874569: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-30 23:51:32.874583: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-30 23:51:32.874588: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-30 23:51:34.394849: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-30 23:51:34.394866: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-30 23:51:34.394869: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-30 23:51:34.394859: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-30 23:52:15.594882: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-06-30 23:52:15.594892: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-06-30 23:52:15.594900: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-06-30 23:52:15.594909: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+val: 400 180 Trueval: 400 180 Trueval: 400 180 Trueval: 400 180 True
+
+
+
+Fine-tuning OpenVLA Model `logs/openvla-7b+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-26_18-18-24+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-28_09-31-19` on `mikasa_mix`Fine-tuning OpenVLA Model `logs/openvla-7b+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-26_18-18-24+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-28_09-31-19` on `mikasa_mix`
+Fine-tuning OpenVLA Model `logs/openvla-7b+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-26_18-18-24+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-28_09-31-19` on `mikasa_mix`
+
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 650, in <module>
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 650, in <module>
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 650, in <module>
+    finetune()
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/draccus/argparsing.py", line 203, in wrapper_inner
+        finetune()finetune()
+
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/draccus/argparsing.py", line 203, in wrapper_inner
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/draccus/argparsing.py", line 203, in wrapper_inner
+        response = fn(cfg, *args, **kwargs)response = fn(cfg, *args, **kwargs)
+
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 324, in finetune
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 324, in finetune
+    response = fn(cfg, *args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 324, in finetune
+    os.makedirs(run_dir, exist_ok=True)    
+os.makedirs(run_dir, exist_ok=True)  File "/usr/lib64/python3.9/os.py", line 225, in makedirs
+    
+os.makedirs(run_dir, exist_ok=True)  File "/usr/lib64/python3.9/os.py", line 225, in makedirs
+
+  File "/usr/lib64/python3.9/os.py", line 225, in makedirs
+            mkdir(name, mode)mkdir(name, mode)mkdir(name, mode)
+
+
+OSErrorOSErrorOSError: : : [Errno 36] File name too long: 'logs/openvla-7b+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-26_18-18-24+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-28_09-31-19+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-30_23-55-14'[Errno 36] File name too long: 'logs/openvla-7b+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-26_18-18-24+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-28_09-31-19+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-30_23-55-14'[Errno 36] File name too long: 'logs/openvla-7b+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-26_18-18-24+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-28_09-31-19+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-30_23-55-14'
+
+
+wandb: Currently logged in as: leothemagnificent (leothemagnificent-university-of-cambridge) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.10
+wandb: Run data is saved locally in /rds/user/lz307/hpc-work/openvla/wandb/run-20250630_235515-byd6ur34
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ft+openvla-7b+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-26_18-18-24+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-28_09-31-19+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-30_23-55-14
+wandb: ⭐️ View project at https://wandb.ai/leothemagnificent-university-of-cambridge/openvla-mikasa
+wandb: 🚀 View run at https://wandb.ai/leothemagnificent-university-of-cambridge/openvla-mikasa/runs/byd6ur34
+Fine-tuning OpenVLA Model `logs/openvla-7b+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-26_18-18-24+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-28_09-31-19` on `mikasa_mix`
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 650, in <module>
+    finetune()
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/draccus/argparsing.py", line 203, in wrapper_inner
+    response = fn(cfg, *args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 324, in finetune
+    os.makedirs(run_dir, exist_ok=True)
+  File "/usr/lib64/python3.9/os.py", line 225, in makedirs
+    mkdir(name, mode)
+OSError: [Errno 36] File name too long: 'logs/openvla-7b+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-26_18-18-24+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-28_09-31-19+mikasa_mix+b14+lr-0.0005+lora-r128+dropout-0.01--mikasa_mix--image_aug--25-06-30_23-55-14'
+[2025-06-30 23:55:24,182] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 4006411 closing signal SIGTERM
+[2025-06-30 23:55:24,597] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 1 (pid: 4006412) of binary: /rds/user/lz307/hpc-work/openvla/.venv/bin/python
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/.venv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 347, in wrapper
+    return f(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 812, in main
+    run(args)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 803, in run
+    elastic_launch(
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 135, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 268, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+vla-scripts/finetune.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2025-06-30_23:55:24
+  host      : gpu-q-33.data.cluster
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 4006413)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2025-06-30_23:55:24
+  host      : gpu-q-33.data.cluster
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 4006414)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-06-30_23:55:24
+  host      : gpu-q-33.data.cluster
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 4006412)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

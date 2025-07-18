@@ -1,0 +1,195 @@
+Loading rhel8/default-amp
+  Loading requirement: rhel8/slurm singularity/current rhel8/global cuda/11.4
+    libpciaccess/0.16/gcc-9.4.0-6fonbj6 libiconv/1.16/gcc-9.4.0-ahebbov
+    libxml2/2.9.12/gcc-9.4.0-gnknt5e ncurses/6.2/gcc-9.4.0-aiirok7
+    hwloc/2.5.0/gcc-9.4.0-7sqomga libevent/2.1.12/gcc-9.4.0-hgny7cm
+    numactl/2.0.14/gcc-9.4.0-52dwc6n cuda/11.4.0/gcc-9.4.0-3hnxhjt
+    gdrcopy/2.2/gcc-9.4.0-e4igtfp knem/1.1.4/gcc-9.4.0-bpbxgva
+    libnl/3.3.0/gcc-9.4.0-whwhrwb rdma-core/34.0/gcc-9.4.0-5eo5n2u
+    ucx/1.11.1/gcc-9.4.0-lktqyl4 openmpi/4.1.1/gcc-9.4.0-epagguv
+Changed directory to /rds/user/lz307/hpc-work/openvla.
+
+JobID: 9260078
+======
+Time: Sun 11 May 01:50:49 BST 2025
+Running on master node: gpu-q-36
+Current directory: /rds/user/lz307/hpc-work/openvla
+
+Nodes allocated:
+================
+gpu-q-36
+
+numtasks=4, numnodes=1, mpi_tasks_per_node=4 (OMP_NUM_THREADS=1)
+
+Executing command:
+==================
+/home/lz307/rds/hpc-work/openvla/fine_tune_mikasa.sh 
+
+2025-05-11 01:51:01.125817: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-05-11 01:51:01.125878: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-05-11 01:51:01.125966: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-05-11 01:51:01.126012: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-05-11 01:51:01.128372: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-05-11 01:51:01.128377: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-05-11 01:51:01.139098: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-05-11 01:51:01.139112: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-05-11 01:51:01.145346: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-05-11 01:51:01.145448: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-05-11 01:51:01.145441: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-05-11 01:51:01.145534: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-05-11 01:51:01.147781: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-05-11 01:51:01.147830: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-05-11 01:51:01.157834: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-05-11 01:51:01.157836: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-05-11 01:51:04.123404: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-05-11 01:51:04.123524: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-05-11 01:51:04.123534: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2025-05-11 01:51:04.123560: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+val: 100 180 True
+val: 100 180 True
+Fine-tuning OpenVLA Model `openvla/openvla-7b` on `mikasa_robo_tfds/RememberColor9-v0_baseline`
+val: 100 180 True
+Fine-tuning OpenVLA Model `openvla/openvla-7b` on `mikasa_robo_tfds/RememberColor9-v0_baseline`
+wandb: Currently logged in as: leothemagnificent (leothemagnificent-university-of-cambridge) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+val: 100 180 True
+Fine-tuning OpenVLA Model `openvla/openvla-7b` on `mikasa_robo_tfds/RememberColor9-v0_baseline`
+wandb: Tracking run with wandb version 0.19.10
+wandb: Run data is saved locally in /rds/user/lz307/hpc-work/openvla/wandb/run-20250511_015119-pg4fjao9
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ft+openvla-7b+mikasa_robo_tfds/RememberColor9-v0_baseline+b16+lr-0.0005+lora-r32+dropout-0.0--mikasa_robo_tfds/RememberColor9-v0_baseline--image_aug--25-05-11_01-51-19
+wandb: ⭐️ View project at https://wandb.ai/leothemagnificent-university-of-cambridge/openvla-mikasa
+wandb: 🚀 View run at https://wandb.ai/leothemagnificent-university-of-cambridge/openvla-mikasa/runs/pg4fjao9
+Fine-tuning OpenVLA Model `openvla/openvla-7b` on `mikasa_robo_tfds/RememberColor9-v0_baseline`
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:00<00:00,  3.40it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:00<00:00,  2.65it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:00<00:00,  3.03it/s]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:00<00:00,  3.98it/s]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:00<00:00,  3.07it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00,  4.30it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00,  4.13it/s]
+Loading checkpoint shards:  67%|██████▋   | 2/3 [00:00<00:00,  3.41it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00,  3.27it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00,  3.16it/s]
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00,  3.64it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00,  3.53it/s]
+Loading checkpoint shards:  33%|███▎      | 1/3 [00:00<00:00,  3.41it/s]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:00<00:00,  4.03it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00,  4.39it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00,  4.20it/s]
+trainable params: 110,828,288 || all params: 7,652,065,472 || trainable%: 1.4483
+trainable params: 110,828,288 || all params: 7,652,065,472 || trainable%: 1.4483
+trainable params: 110,828,288 || all params: 7,652,065,472 || trainable%: 1.4483
+trainable params: 110,828,288 || all params: 7,652,065,472 || trainable%: 1.4483
+build dataset `data`
+self.data_root_dir data
+self.data_root_dir data
+build dataset `data`
+self.data_root_dir data
+self.data_root_dir data
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 574, in <module>
+    finetune()
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/draccus/argparsing.py", line 203, in wrapper_inner
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 574, in <module>
+    finetune()
+    response = fn(cfg, *args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 391, in finetune
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/draccus/argparsing.py", line 203, in wrapper_inner
+    response = fn(cfg, *args, **kwargs)
+    vla_dataset = RLDSDataset(
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 391, in finetune
+    vla_dataset = RLDSDataset(
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/datasets.py", line 93, in __init__
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/datasets.py", line 93, in __init__
+    per_dataset_kwargs, weights = get_oxe_dataset_kwargs_and_weights(
+    per_dataset_kwargs, weights = get_oxe_dataset_kwargs_and_weights(
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/materialize.py", line 117, in get_oxe_dataset_kwargs_and_weights
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/materialize.py", line 117, in get_oxe_dataset_kwargs_and_weights
+    make_oxe_dataset_kwargs(
+    make_oxe_dataset_kwargs(  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/materialize.py", line 31, in make_oxe_dataset_kwargs
+    print("OXE_DATASET_CONFIGS", OXE_DATASET_CONFIGS[dataset_name])
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/materialize.py", line 31, in make_oxe_dataset_kwargs
+KeyError: 'mikasa_robo_tfds/RememberColor9-v0_baseline'
+    print("OXE_DATASET_CONFIGS", OXE_DATASET_CONFIGS[dataset_name])
+KeyError: 'mikasa_robo_tfds/RememberColor9-v0_baseline'
+build dataset `data`
+build dataset `data`self.data_root_dir
+ data
+self.data_root_dirself.data_root_dir  datadata
+
+self.data_root_dir data
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 574, in <module>
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 574, in <module>
+    finetune()
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/draccus/argparsing.py", line 203, in wrapper_inner
+    finetune()
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/draccus/argparsing.py", line 203, in wrapper_inner
+    response = fn(cfg, *args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 391, in finetune
+    vla_dataset = RLDSDataset(
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/datasets.py", line 93, in __init__
+    response = fn(cfg, *args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 391, in finetune
+    per_dataset_kwargs, weights = get_oxe_dataset_kwargs_and_weights(
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/materialize.py", line 117, in get_oxe_dataset_kwargs_and_weights
+    vla_dataset = RLDSDataset(
+      File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/datasets.py", line 93, in __init__
+make_oxe_dataset_kwargs(
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/materialize.py", line 31, in make_oxe_dataset_kwargs
+        per_dataset_kwargs, weights = get_oxe_dataset_kwargs_and_weights(print("OXE_DATASET_CONFIGS", OXE_DATASET_CONFIGS[dataset_name])
+
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/materialize.py", line 117, in get_oxe_dataset_kwargs_and_weights
+KeyError: 'mikasa_robo_tfds/RememberColor9-v0_baseline'
+    make_oxe_dataset_kwargs(
+  File "/rds/user/lz307/hpc-work/openvla/prismatic/vla/datasets/rlds/oxe/materialize.py", line 31, in make_oxe_dataset_kwargs
+    print("OXE_DATASET_CONFIGS", OXE_DATASET_CONFIGS[dataset_name])
+KeyError: 'mikasa_robo_tfds/RememberColor9-v0_baseline'
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mft+openvla-7b+mikasa_robo_tfds/RememberColor9-v0_baseline+b16+lr-0.0005+lora-r32+dropout-0.0--mikasa_robo_tfds/RememberColor9-v0_baseline--image_aug--25-05-11_01-51-19[0m at: [34mhttps://wandb.ai/leothemagnificent-university-of-cambridge/openvla-mikasa/runs/pg4fjao9[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20250511_015119-pg4fjao9/logs[0m
+[2025-05-11 01:51:35,338] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 2651584) of binary: /rds/user/lz307/hpc-work/openvla/.venv/bin/python
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/.venv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 347, in wrapper
+    return f(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 812, in main
+    run(args)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 803, in run
+    elastic_launch(
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 135, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 268, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+vla-scripts/finetune.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2025-05-11_01:51:35
+  host      : gpu-q-36.data.cluster
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 2651585)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2025-05-11_01:51:35
+  host      : gpu-q-36.data.cluster
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 2651586)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[3]:
+  time      : 2025-05-11_01:51:35
+  host      : gpu-q-36.data.cluster
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 2651587)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-05-11_01:51:35
+  host      : gpu-q-36.data.cluster
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 2651584)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

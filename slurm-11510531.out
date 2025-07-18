@@ -1,0 +1,93 @@
+Loading rhel8/default-amp
+  Loading requirement: rhel8/slurm singularity/current rhel8/global cuda/11.4
+    libpciaccess/0.16/gcc-9.4.0-6fonbj6 libiconv/1.16/gcc-9.4.0-ahebbov
+    libxml2/2.9.12/gcc-9.4.0-gnknt5e ncurses/6.2/gcc-9.4.0-aiirok7
+    hwloc/2.5.0/gcc-9.4.0-7sqomga libevent/2.1.12/gcc-9.4.0-hgny7cm
+    numactl/2.0.14/gcc-9.4.0-52dwc6n cuda/11.4.0/gcc-9.4.0-3hnxhjt
+    gdrcopy/2.2/gcc-9.4.0-e4igtfp knem/1.1.4/gcc-9.4.0-bpbxgva
+    libnl/3.3.0/gcc-9.4.0-whwhrwb rdma-core/34.0/gcc-9.4.0-5eo5n2u
+    ucx/1.11.1/gcc-9.4.0-lktqyl4 openmpi/4.1.1/gcc-9.4.0-epagguv
+Changed directory to /rds/user/lz307/hpc-work/openvla.
+
+JobID: 11510531
+======
+Time: Thu 26 Jun 11:12:02 BST 2025
+Running on master node: gpu-q-38
+Current directory: /rds/user/lz307/hpc-work/openvla
+
+Nodes allocated:
+================
+gpu-q-38
+
+numtasks=4, numnodes=1, mpi_tasks_per_node=4 (OMP_NUM_THREADS=1)
+
+Executing command:
+==================
+/home/lz307/rds/hpc-work/openvla/fine_tune_mikasa.sh 
+
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 567
+    step=gradient_step_idx,
+        ^
+SyntaxError: invalid syntax  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 567
+
+    step=gradient_step_idx,
+          File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 567
+^
+    SyntaxErrorstep=gradient_step_idx,
+:     invalid syntax 
+   File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 567
+      step=gradient_step_idx,
+^
+    SyntaxError :  invalid syntax 
+ ^
+SyntaxError: invalid syntax
+[2025-06-26 11:13:12,962] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 158280) of binary: /rds/user/lz307/hpc-work/openvla/.venv/bin/python
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/.venv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 347, in wrapper
+    return f(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 812, in main
+    run(args)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 803, in run
+    elastic_launch(
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 135, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 268, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+vla-scripts/finetune.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2025-06-26_11:13:12
+  host      : gpu-q-38.data.cluster
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 158281)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2025-06-26_11:13:12
+  host      : gpu-q-38.data.cluster
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 158282)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[3]:
+  time      : 2025-06-26_11:13:12
+  host      : gpu-q-38.data.cluster
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 158283)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-06-26_11:13:12
+  host      : gpu-q-38.data.cluster
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 158280)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

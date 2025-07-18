@@ -1,0 +1,935 @@
+Loading rhel8/default-amp
+  Loading requirement: rhel8/slurm singularity/current rhel8/global cuda/11.4
+    libpciaccess/0.16/gcc-9.4.0-6fonbj6 libiconv/1.16/gcc-9.4.0-ahebbov
+    libxml2/2.9.12/gcc-9.4.0-gnknt5e ncurses/6.2/gcc-9.4.0-aiirok7
+    hwloc/2.5.0/gcc-9.4.0-7sqomga libevent/2.1.12/gcc-9.4.0-hgny7cm
+    numactl/2.0.14/gcc-9.4.0-52dwc6n cuda/11.4.0/gcc-9.4.0-3hnxhjt
+    gdrcopy/2.2/gcc-9.4.0-e4igtfp knem/1.1.4/gcc-9.4.0-bpbxgva
+    libnl/3.3.0/gcc-9.4.0-whwhrwb rdma-core/34.0/gcc-9.4.0-5eo5n2u
+    ucx/1.11.1/gcc-9.4.0-lktqyl4 openmpi/4.1.1/gcc-9.4.0-epagguv
+Changed directory to /rds/user/lz307/hpc-work/openvla.
+
+JobID: 11342817
+======
+Time: Sun 22 Jun 00:11:25 BST 2025
+Running on master node: gpu-q-24
+Current directory: /rds/user/lz307/hpc-work/openvla
+
+Nodes allocated:
+================
+gpu-q-24
+
+numtasks=4, numnodes=1, mpi_tasks_per_node=4 (OMP_NUM_THREADS=1)
+
+Executing command:
+==================
+/home/lz307/rds/hpc-work/openvla/fine_tune_mikasa.sh 
+
+2025-06-22 00:13:29.389178: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2025-06-22 00:13:29.391550: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2025-06-22 00:13:29.981612: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-22 00:13:31.321556: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-22 00:14:16.476075: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+val: 400 180 True
+wandb: Currently logged in as: leothemagnificent (leothemagnificent-university-of-cambridge) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.10
+wandb: Run data is saved locally in /rds/user/lz307/hpc-work/openvla/wandb/run-20250622_001724-nu7qpdtt
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ft+openvla-7b+mikasa_mix+b24+lr-0.0005+lora-r32+dropout-0.05--mikasa_mix--image_aug--25-06-22_00-17-23
+wandb: ⭐️ View project at https://wandb.ai/leothemagnificent-university-of-cambridge/openvla-mikasa
+wandb: 🚀 View run at https://wandb.ai/leothemagnificent-university-of-cambridge/openvla-mikasa/runs/nu7qpdtt
+Fine-tuning OpenVLA Model `openvla/openvla-7b` on `mikasa_mix`
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:06<00:13,  6.64s/it]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:09<00:04,  4.35s/it]Loading checkpoint shards: 100%|██████████| 3/3 [00:09<00:00,  2.62s/it]Loading checkpoint shards: 100%|██████████| 3/3 [00:09<00:00,  3.32s/it]
+trainable params: 110,828,288 || all params: 7,652,065,472 || trainable%: 1.4483
+build dataset `data`
+self.data_root_dir data
+self.data_root_dir data
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+self.data_root_dir data
+2025-06-22 00:21:12.073247: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:12] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ShellGameTouch                  
+                          -v0/1.0.0/dataset_statistics_3c0ebe6                  
+                          7131435bb4cf51e096df6b15aa5c36691229                  
+                          c65e2c6fcdda7bfb55e65.json.                           
+2025-06-22 00:21:12.878479: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:13.542572: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:13] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ShellGamePush-                  
+                          v0/1.0.0/dataset_statistics_ebeabc91                  
+                          85a58bf136b809c2ca35554cee8bc02c0a99                  
+                          9562a5c380ce1b3337cb.json.                            
+2025-06-22 00:21:13.680321: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:13.871800: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ShellGamePick-                  
+                          v0/1.0.0/dataset_statistics_323e3894                  
+                          299c56de3b6832b6c4c63f93f0a7ba133793                  
+                          d7c2f4b55bfd30bf5d5e.json.                            
+2025-06-22 00:21:14.019560: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:14.205638: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:14] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptSlow-                  
+                          v0/1.0.0/dataset_statistics_70ea4ca9                  
+                          86a7985fa990279f3a3866b5f6b487b971d1                  
+                          6ec79c36cf54d2764704.json.                            
+2025-06-22 00:21:14.746344: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:14.938231: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:15] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptMediu                  
+                          m-v0/1.0.0/dataset_statistics_e7294f                  
+                          470ffac7244cb9d5ab7671850566555b5556                  
+                          c8bc2e0c71ebd58b1909f0.json.                          
+2025-06-22 00:21:15.081403: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:15.262264: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptFast-                  
+                          v0/1.0.0/dataset_statistics_c2cd242a                  
+                          752791cbf089c3bfca810c1437635b53a206                  
+                          20345af5e94c84bec511.json.                            
+2025-06-22 00:21:15.396221: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:15.598900: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptGrabS                  
+                          low-v0/1.0.0/dataset_statistics_3d49                  
+                          3d542172a93ec1f5b36fd174d607f4a605c2                  
+                          21d972721b3b671e04435114.json.                        
+2025-06-22 00:21:15.754348: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:15.953703: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:16] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptGrabM                  
+                          edium-v0/1.0.0/dataset_statistics_dc                  
+                          4e9bf5c47b5898c5594d33567d8444510fea                  
+                          9f7e32b5e9bb7c7d3c87dc778e.json.                      
+2025-06-22 00:21:16.083363: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:16.278468: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptGrabF                  
+                          ast-v0/1.0.0/dataset_statistics_9b9b                  
+                          2e458c74cc0f4d24a59373b2c27b4264723b                  
+                          582cbbcf23cde20d5b27735e.json.                        
+2025-06-22 00:21:16.443277: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:16.696180: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RotateLenientP                  
+                          os-v0/1.0.0/dataset_statistics_8d9cb                  
+                          f02dabfedd546b2ca7c3c33c0bb8271f71d7                  
+                          25200d9ff19edc27b666d77.json.                         
+2025-06-22 00:21:16.859833: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:17.067421: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:17] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RotateLenientP                  
+                          osNeg-v0/1.0.0/dataset_statistics_76                  
+                          a92233366940aa9e857937e6725e326d3fb7                  
+                          908a5d787853ecb16635d02d2f.json.                      
+2025-06-22 00:21:17.228060: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:17.434061: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RotateStrictPo                  
+                          s-v0/1.0.0/dataset_statistics_e4dc73                  
+                          c1406d3424c5607d5f176c7216d42babcf0e                  
+                          bb14a3f90dd5b8d69cf184.json.                          
+2025-06-22 00:21:17.584590: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:17.777401: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RotateStrictPo                  
+                          sNeg-v0/1.0.0/dataset_statistics_8cb                  
+                          b0925a8179d321ffcdc4358308850f2edaf0                  
+                          f6eb7d44d307e2092b21081d7.json.                       
+2025-06-22 00:21:17.907074: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:18.138478: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:18] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/TakeItBack-v0/                  
+                          1.0.0/dataset_statistics_ce0b03fe5e2                  
+                          a3f7db020adf62582184b8178e580896418e                  
+                          00895e808bcc06bca.json.                               
+2025-06-22 00:21:18.289280: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:18.473066: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor3                  
+                          -v0/1.0.0/dataset_statistics_7f1eb27                  
+                          28b9bad5a5c6c850f4b13412a94c941dfdc7                  
+                          29fced2afdd5c7226b9fe.json.                           
+2025-06-22 00:21:18.631484: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:18.836166: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor5                  
+                          -v0/1.0.0/dataset_statistics_2ecc443                  
+                          1459657d2f45be1de16d90556dd5411df87a                  
+                          a94a2f5d9ccfd8056b253.json.                           
+2025-06-22 00:21:18.987346: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:19.177081: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:19] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor9                  
+                          -v0/1.0.0/dataset_statistics_824940f                  
+                          4cffc722412bd496cf77f425735c3e3645d9                  
+                          2b155a0ce39de2ea24180.json.                           
+2025-06-22 00:21:19.323083: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:19.537718: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShape3                  
+                          -v0/1.0.0/dataset_statistics_792f49e                  
+                          0ddf1ba95f25d8d134cfe9e0d10f93d0bf9a                  
+                          6aefe3abd04ec609136e5.json.                           
+2025-06-22 00:21:19.681325: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:19.884266: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShape5                  
+                          -v0/1.0.0/dataset_statistics_c254414                  
+                          8e15744bc356188f567cb96ef27b5f40b735                  
+                          a9adaf656f1258ce364e7.json.                           
+2025-06-22 00:21:19.998884: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:20.206448: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:20] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShape9                  
+                          -v0/1.0.0/dataset_statistics_cc9e9ec                  
+                          7b59528c62e95ae25bd561d7d9505b33402d                  
+                          3b4fd9cd29dfea8ca8d05.json.                           
+2025-06-22 00:21:20.386282: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:20.572044: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShapeA                  
+                          ndColor3x2-v0/1.0.0/dataset_statisti                  
+                          cs_1f08b92db45037e5e4e9c96f0baba75ef                  
+                          7932c01048f41a110d2037be0289453.json                  
+                          .                                                     
+2025-06-22 00:21:20.686065: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:20.886519: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShapeA                  
+                          ndColor3x3-v0/1.0.0/dataset_statisti                  
+                          cs_812e4399209153e40c4bb4efebac63d5a                  
+                          1138a44e4c4e13211eb15fcf8cd4530.json                  
+                          .                                                     
+2025-06-22 00:21:21.025928: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:21.259568: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:21] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShapeA                  
+                          ndColor5x3-v0/1.0.0/dataset_statisti                  
+                          cs_6da4e6b78b132c31e91c837b870125a17                  
+                          727acc86f3bbc45dd68e50c5a65125f.json                  
+                          .                                                     
+2025-06-22 00:21:21.400093: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:21.581511: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/BunchOfColors3                  
+                          -v0/1.0.0/dataset_statistics_331f2d7                  
+                          ddcf32322a303eb7f85182a1924a767fc51a                  
+                          0329292ed83f3d199b05d.json.                           
+2025-06-22 00:21:21.709431: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:21.903916: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/BunchOfColors5                  
+                          -v0/1.0.0/dataset_statistics_c683597                  
+                          191b6cfac46a4bdd7cf54fd452ae9434febe                  
+                          ba7704551ee06b3d1d505.json.                           
+2025-06-22 00:21:22.031731: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:22.218460: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:22] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/BunchOfColors7                  
+                          -v0/1.0.0/dataset_statistics_23047af                  
+                          2842de75636d624fe83a6a521496e6713cfa                  
+                          b869b586f3e619f08fa80.json.                           
+2025-06-22 00:21:22.355481: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:22.590056: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/SeqOfColors3-v                  
+                          0/1.0.0/dataset_statistics_fbf978a6c                  
+                          95034ca4613b591890ff89d052fd21b7f260                  
+                          db1bb7537c3adca7589.json.                             
+2025-06-22 00:21:22.726510: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:22.931956: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:23] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/SeqOfColors5-v                  
+                          0/1.0.0/dataset_statistics_0ea0125ad                  
+                          7ac583814b84ad7d41e0424ca26bbcbf088e                  
+                          58578529d2603910ab8.json.                             
+2025-06-22 00:21:23.060682: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:23.252276: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/SeqOfColors7-v                  
+                          0/1.0.0/dataset_statistics_c196cd4cf                  
+                          924f9efea0c39b9eb00768886b4986d0a84b                  
+                          4e3a75f807316acdb92.json.                             
+2025-06-22 00:21:23.384457: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:23.567972: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ChainOfColors3                  
+                          -v0/1.0.0/dataset_statistics_4e6fcd8                  
+                          c3b872220ab912f05134aa93e52e27002858                  
+                          0de40e29126581a839fb4.json.                           
+2025-06-22 00:21:23.695501: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:23.878416: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ChainOfColors5                  
+                          -v0/1.0.0/dataset_statistics_cea1568                  
+                          5a6e14f5087d9fe202a1a1628b38749074f9                  
+                          039e14077a10d08a50fb6.json.                           
+2025-06-22 00:21:24.006227: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:24.229776: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:24] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ChainOfColors7                  
+                          -v0/1.0.0/dataset_statistics_009053c                  
+                          892629a15b5b0299948f52b71f55f00456b6                  
+                          99f659bcd14904e5a3606.json.                           
+2025-06-22 00:21:24.387323: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:24.578595: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor3                  
+                          -v0_baseline/1.0.0/dataset_statistic                  
+                          s_55613fad5fe09ac925a77bc2cda794c2dd                  
+                          cb810471bd4849c154db2cf11327fb.json.                  
+2025-06-22 00:21:24.714735: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:24.889138: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor9                  
+                          -v0_baseline/1.0.0/dataset_statistic                  
+                          s_4a16fbfeda508221197a51004b913829ff                  
+                          51fcaa4ef4cbd8e3fed617975d4959.json.                  
+2025-06-22 00:21:25.024403: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+
+######################################################################################
+# Loading the following 34 datasets (incl. sampling weight):                         #
+# mikasa_robo_tfds/ShellGameTouch-v0: ======================================0.029123 #
+# mikasa_robo_tfds/ShellGamePush-v0: =======================================0.029123 #
+# mikasa_robo_tfds/ShellGamePick-v0: =======================================0.029123 #
+# mikasa_robo_tfds/InterceptSlow-v0: =======================================0.029123 #
+# mikasa_robo_tfds/InterceptMedium-v0: =====================================0.029123 #
+# mikasa_robo_tfds/InterceptFast-v0: =======================================0.029123 #
+# mikasa_robo_tfds/InterceptGrabSlow-v0: ===================================0.029123 #
+# mikasa_robo_tfds/InterceptGrabMedium-v0: =================================0.029123 #
+# mikasa_robo_tfds/InterceptGrabFast-v0: ===================================0.029123 #
+# mikasa_robo_tfds/RotateLenientPos-v0: ====================================0.029123 #
+# mikasa_robo_tfds/RotateLenientPosNeg-v0: =================================0.029123 #
+# mikasa_robo_tfds/RotateStrictPos-v0: =====================================0.029123 #
+# mikasa_robo_tfds/RotateStrictPosNeg-v0: ==================================0.029123 #
+# mikasa_robo_tfds/TakeItBack-v0: ==========================================0.058573 #
+# mikasa_robo_tfds/RememberColor3-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberColor5-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberColor9-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberShape3-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberShape5-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberShape9-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberShapeAndColor3x2-v0: ============================0.019306 #
+# mikasa_robo_tfds/RememberShapeAndColor3x3-v0: ============================0.019306 #
+# mikasa_robo_tfds/RememberShapeAndColor5x3-v0: ============================0.019306 #
+# mikasa_robo_tfds/BunchOfColors3-v0: ======================================0.038940 #
+# mikasa_robo_tfds/BunchOfColors5-v0: ======================================0.038940 #
+# mikasa_robo_tfds/BunchOfColors7-v0: ======================================0.038940 #
+# mikasa_robo_tfds/SeqOfColors3-v0: ========================================0.038940 #
+# mikasa_robo_tfds/SeqOfColors5-v0: ========================================0.038940 #
+# mikasa_robo_tfds/SeqOfColors7-v0: ========================================0.038940 #
+# mikasa_robo_tfds/ChainOfColors3-v0: ======================================0.038940 #
+# mikasa_robo_tfds/ChainOfColors5-v0: ======================================0.038940 #
+# mikasa_robo_tfds/ChainOfColors7-v0: ======================================0.038940 #
+# mikasa_robo_tfds/RememberColor3-v0_baseline: =============================0.019306 #
+# mikasa_robo_tfds/RememberColor9-v0_baseline: =============================0.019306 #
+######################################################################################
+
+06/22 [00:21:25] INFO     | >> [*] Threads per Dataset: [1 1 1 1  dataset.py:531
+                          1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1               
+                          1 1 1 1 1 1 1 1 1 1]                                  
+                 INFO     | >> [*] Reads per Dataset: [1 1 1 1 1  dataset.py:532
+                          1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1               
+                          1 1 1 1 1 1 1 1 1]                                    
+                 INFO     | >> [*] Constructing datasets...       dataset.py:535
+2025-06-22 00:21:25.271301: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:26.551870: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:26.770324: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:26.987679: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:27.203829: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:27.420209: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:27.635850: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:27.852417: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:28.068491: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:28.285307: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:28.506954: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:28.723540: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:28.940031: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:29.157170: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:29.372978: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:29.587757: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:29.802749: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:30.018059: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:30.234729: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:30.451351: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:30.667182: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:30.883542: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:31.099251: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:31.316102: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:31.532605: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:31.748902: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:31.966518: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:32.184728: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:32.403091: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:32.621580: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:32.840164: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:33.059455: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:33.694250: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:33.917633: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:34] INFO     | >> [*] Applying frame transforms on   dataset.py:575
+                          dataset...                                            
+self.data_root_dir data
+self.data_root_dir data
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+OXE_DATASET_CONFIGS {'image_obs_keys': {'primary': 'image', 'secondary': None, 'wrist': None}, 'depth_obs_keys': {'primary': None, 'secondary': None, 'wrist': None}, 'state_obs_keys': ['state'], 'state_encoding': <StateEncoding.POS_EULER: 1>, 'action_encoding': <ActionEncoding.EEF_POS: 1>}
+self.data_root_dir data
+2025-06-22 00:21:35.383471: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:35] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ShellGameTouch                  
+                          -v0/1.0.0/dataset_statistics_3c0ebe6                  
+                          7131435bb4cf51e096df6b15aa5c36691229                  
+                          c65e2c6fcdda7bfb55e65.json.                           
+2025-06-22 00:21:35.490692: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:35.619141: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ShellGamePush-                  
+                          v0/1.0.0/dataset_statistics_ebeabc91                  
+                          85a58bf136b809c2ca35554cee8bc02c0a99                  
+                          9562a5c380ce1b3337cb.json.                            
+2025-06-22 00:21:35.724961: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:35.854627: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ShellGamePick-                  
+                          v0/1.0.0/dataset_statistics_323e3894                  
+                          299c56de3b6832b6c4c63f93f0a7ba133793                  
+                          d7c2f4b55bfd30bf5d5e.json.                            
+2025-06-22 00:21:35.961046: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:36.090691: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:36] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptSlow-                  
+                          v0/1.0.0/dataset_statistics_70ea4ca9                  
+                          86a7985fa990279f3a3866b5f6b487b971d1                  
+                          6ec79c36cf54d2764704.json.                            
+2025-06-22 00:21:36.195894: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:36.327059: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptMediu                  
+                          m-v0/1.0.0/dataset_statistics_e7294f                  
+                          470ffac7244cb9d5ab7671850566555b5556                  
+                          c8bc2e0c71ebd58b1909f0.json.                          
+2025-06-22 00:21:36.432458: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:36.563119: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptFast-                  
+                          v0/1.0.0/dataset_statistics_c2cd242a                  
+                          752791cbf089c3bfca810c1437635b53a206                  
+                          20345af5e94c84bec511.json.                            
+2025-06-22 00:21:36.669121: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:36.800571: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptGrabS                  
+                          low-v0/1.0.0/dataset_statistics_3d49                  
+                          3d542172a93ec1f5b36fd174d607f4a605c2                  
+                          21d972721b3b671e04435114.json.                        
+2025-06-22 00:21:36.906204: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:37.036483: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:37] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptGrabM                  
+                          edium-v0/1.0.0/dataset_statistics_dc                  
+                          4e9bf5c47b5898c5594d33567d8444510fea                  
+                          9f7e32b5e9bb7c7d3c87dc778e.json.                      
+2025-06-22 00:21:37.141904: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:37.274004: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/InterceptGrabF                  
+                          ast-v0/1.0.0/dataset_statistics_9b9b                  
+                          2e458c74cc0f4d24a59373b2c27b4264723b                  
+                          582cbbcf23cde20d5b27735e.json.                        
+2025-06-22 00:21:37.380163: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:37.513664: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RotateLenientP                  
+                          os-v0/1.0.0/dataset_statistics_8d9cb                  
+                          f02dabfedd546b2ca7c3c33c0bb8271f71d7                  
+                          25200d9ff19edc27b666d77.json.                         
+2025-06-22 00:21:37.619824: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:37.750421: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RotateLenientP                  
+                          osNeg-v0/1.0.0/dataset_statistics_76                  
+                          a92233366940aa9e857937e6725e326d3fb7                  
+                          908a5d787853ecb16635d02d2f.json.                      
+2025-06-22 00:21:37.858370: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:37.988970: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:38] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RotateStrictPo                  
+                          s-v0/1.0.0/dataset_statistics_e4dc73                  
+                          c1406d3424c5607d5f176c7216d42babcf0e                  
+                          bb14a3f90dd5b8d69cf184.json.                          
+2025-06-22 00:21:38.096253: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:38.227698: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RotateStrictPo                  
+                          sNeg-v0/1.0.0/dataset_statistics_8cb                  
+                          b0925a8179d321ffcdc4358308850f2edaf0                  
+                          f6eb7d44d307e2092b21081d7.json.                       
+2025-06-22 00:21:38.334425: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:38.465919: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/TakeItBack-v0/                  
+                          1.0.0/dataset_statistics_ce0b03fe5e2                  
+                          a3f7db020adf62582184b8178e580896418e                  
+                          00895e808bcc06bca.json.                               
+2025-06-22 00:21:38.572608: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:38.701692: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor3                  
+                          -v0/1.0.0/dataset_statistics_7f1eb27                  
+                          28b9bad5a5c6c850f4b13412a94c941dfdc7                  
+                          29fced2afdd5c7226b9fe.json.                           
+2025-06-22 00:21:38.807605: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:38.943671: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:39] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor5                  
+                          -v0/1.0.0/dataset_statistics_2ecc443                  
+                          1459657d2f45be1de16d90556dd5411df87a                  
+                          a94a2f5d9ccfd8056b253.json.                           
+2025-06-22 00:21:39.049083: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:39.177456: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor9                  
+                          -v0/1.0.0/dataset_statistics_824940f                  
+                          4cffc722412bd496cf77f425735c3e3645d9                  
+                          2b155a0ce39de2ea24180.json.                           
+2025-06-22 00:21:39.279965: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:39.410161: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShape3                  
+                          -v0/1.0.0/dataset_statistics_792f49e                  
+                          0ddf1ba95f25d8d134cfe9e0d10f93d0bf9a                  
+                          6aefe3abd04ec609136e5.json.                           
+2025-06-22 00:21:39.515592: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:39.646256: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShape5                  
+                          -v0/1.0.0/dataset_statistics_c254414                  
+                          8e15744bc356188f567cb96ef27b5f40b735                  
+                          a9adaf656f1258ce364e7.json.                           
+2025-06-22 00:21:39.751628: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:39.882039: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShape9                  
+                          -v0/1.0.0/dataset_statistics_cc9e9ec                  
+                          7b59528c62e95ae25bd561d7d9505b33402d                  
+                          3b4fd9cd29dfea8ca8d05.json.                           
+2025-06-22 00:21:39.987545: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:40.119804: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:40] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShapeA                  
+                          ndColor3x2-v0/1.0.0/dataset_statisti                  
+                          cs_1f08b92db45037e5e4e9c96f0baba75ef                  
+                          7932c01048f41a110d2037be0289453.json                  
+                          .                                                     
+2025-06-22 00:21:40.226014: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:40.358756: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShapeA                  
+                          ndColor3x3-v0/1.0.0/dataset_statisti                  
+                          cs_812e4399209153e40c4bb4efebac63d5a                  
+                          1138a44e4c4e13211eb15fcf8cd4530.json                  
+                          .                                                     
+2025-06-22 00:21:40.464990: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:40.596036: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberShapeA                  
+                          ndColor5x3-v0/1.0.0/dataset_statisti                  
+                          cs_6da4e6b78b132c31e91c837b870125a17                  
+                          727acc86f3bbc45dd68e50c5a65125f.json                  
+                          .                                                     
+2025-06-22 00:21:40.704456: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:40.836090: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/BunchOfColors3                  
+                          -v0/1.0.0/dataset_statistics_331f2d7                  
+                          ddcf32322a303eb7f85182a1924a767fc51a                  
+                          0329292ed83f3d199b05d.json.                           
+2025-06-22 00:21:40.943553: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:41.074378: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:41] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/BunchOfColors5                  
+                          -v0/1.0.0/dataset_statistics_c683597                  
+                          191b6cfac46a4bdd7cf54fd452ae9434febe                  
+                          ba7704551ee06b3d1d505.json.                           
+2025-06-22 00:21:41.181823: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:41.312598: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/BunchOfColors7                  
+                          -v0/1.0.0/dataset_statistics_23047af                  
+                          2842de75636d624fe83a6a521496e6713cfa                  
+                          b869b586f3e619f08fa80.json.                           
+2025-06-22 00:21:41.419354: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:41.550036: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/SeqOfColors3-v                  
+                          0/1.0.0/dataset_statistics_fbf978a6c                  
+                          95034ca4613b591890ff89d052fd21b7f260                  
+                          db1bb7537c3adca7589.json.                             
+2025-06-22 00:21:41.656450: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:41.786413: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/SeqOfColors5-v                  
+                          0/1.0.0/dataset_statistics_0ea0125ad                  
+                          7ac583814b84ad7d41e0424ca26bbcbf088e                  
+                          58578529d2603910ab8.json.                             
+2025-06-22 00:21:41.891911: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:42.022760: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:42] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/SeqOfColors7-v                  
+                          0/1.0.0/dataset_statistics_c196cd4cf                  
+                          924f9efea0c39b9eb00768886b4986d0a84b                  
+                          4e3a75f807316acdb92.json.                             
+2025-06-22 00:21:42.128467: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:42.927249: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ChainOfColors3                  
+                          -v0/1.0.0/dataset_statistics_4e6fcd8                  
+                          c3b872220ab912f05134aa93e52e27002858                  
+                          0de40e29126581a839fb4.json.                           
+2025-06-22 00:21:43.034749: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:43.168161: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:43] INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ChainOfColors5                  
+                          -v0/1.0.0/dataset_statistics_cea1568                  
+                          5a6e14f5087d9fe202a1a1628b38749074f9                  
+                          039e14077a10d08a50fb6.json.                           
+2025-06-22 00:21:43.274105: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:43.405585: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/ChainOfColors7                  
+                          -v0/1.0.0/dataset_statistics_009053c                  
+                          892629a15b5b0299948f52b71f55f00456b6                  
+                          99f659bcd14904e5a3606.json.                           
+2025-06-22 00:21:43.511194: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:43.641688: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor3                  
+                          -v0_baseline/1.0.0/dataset_statistic                  
+                          s_55613fad5fe09ac925a77bc2cda794c2dd                  
+                          cb810471bd4849c154db2cf11327fb.json.                  
+2025-06-22 00:21:43.746632: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:43.876941: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+                 INFO     | >> [*] Loading existing dataset    data_utils.py:208
+                          statistics from                                       
+                          data/mikasa_robo_tfds/RememberColor9                  
+                          -v0_baseline/1.0.0/dataset_statistic                  
+                          s_4a16fbfeda508221197a51004b913829ff                  
+                          51fcaa4ef4cbd8e3fed617975d4959.json.                  
+2025-06-22 00:21:43.981745: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+
+######################################################################################
+# Loading the following 34 datasets (incl. sampling weight):                         #
+# mikasa_robo_tfds/ShellGameTouch-v0: ======================================0.029123 #
+# mikasa_robo_tfds/ShellGamePush-v0: =======================================0.029123 #
+# mikasa_robo_tfds/ShellGamePick-v0: =======================================0.029123 #
+# mikasa_robo_tfds/InterceptSlow-v0: =======================================0.029123 #
+# mikasa_robo_tfds/InterceptMedium-v0: =====================================0.029123 #
+# mikasa_robo_tfds/InterceptFast-v0: =======================================0.029123 #
+# mikasa_robo_tfds/InterceptGrabSlow-v0: ===================================0.029123 #
+# mikasa_robo_tfds/InterceptGrabMedium-v0: =================================0.029123 #
+# mikasa_robo_tfds/InterceptGrabFast-v0: ===================================0.029123 #
+# mikasa_robo_tfds/RotateLenientPos-v0: ====================================0.029123 #
+# mikasa_robo_tfds/RotateLenientPosNeg-v0: =================================0.029123 #
+# mikasa_robo_tfds/RotateStrictPos-v0: =====================================0.029123 #
+# mikasa_robo_tfds/RotateStrictPosNeg-v0: ==================================0.029123 #
+# mikasa_robo_tfds/TakeItBack-v0: ==========================================0.058573 #
+# mikasa_robo_tfds/RememberColor3-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberColor5-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberColor9-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberShape3-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberShape5-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberShape9-v0: ======================================0.019306 #
+# mikasa_robo_tfds/RememberShapeAndColor3x2-v0: ============================0.019306 #
+# mikasa_robo_tfds/RememberShapeAndColor3x3-v0: ============================0.019306 #
+# mikasa_robo_tfds/RememberShapeAndColor5x3-v0: ============================0.019306 #
+# mikasa_robo_tfds/BunchOfColors3-v0: ======================================0.038940 #
+# mikasa_robo_tfds/BunchOfColors5-v0: ======================================0.038940 #
+# mikasa_robo_tfds/BunchOfColors7-v0: ======================================0.038940 #
+# mikasa_robo_tfds/SeqOfColors3-v0: ========================================0.038940 #
+# mikasa_robo_tfds/SeqOfColors5-v0: ========================================0.038940 #
+# mikasa_robo_tfds/SeqOfColors7-v0: ========================================0.038940 #
+# mikasa_robo_tfds/ChainOfColors3-v0: ======================================0.038940 #
+# mikasa_robo_tfds/ChainOfColors5-v0: ======================================0.038940 #
+# mikasa_robo_tfds/ChainOfColors7-v0: ======================================0.038940 #
+# mikasa_robo_tfds/RememberColor3-v0_baseline: =============================0.019306 #
+# mikasa_robo_tfds/RememberColor9-v0_baseline: =============================0.019306 #
+######################################################################################
+
+06/22 [00:21:44] INFO     | >> [*] Threads per Dataset: [1 1 1 1  dataset.py:531
+                          1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1               
+                          1 1 1 1 1 1 1 1 1 1]                                  
+                 INFO     | >> [*] Reads per Dataset: [1 1 1 1 1  dataset.py:532
+                          1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1               
+                          1 1 1 1 1 1 1 1 1]                                    
+                 INFO     | >> [*] Constructing datasets...       dataset.py:535
+2025-06-22 00:21:44.124146: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:44.344272: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:44.561064: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:44.777543: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:44.993247: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:45.209928: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:45.427326: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:45.643984: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:45.860773: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:46.077258: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:46.294189: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:46.512019: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:46.728578: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:46.945607: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:47.160779: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:47.376756: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:47.592372: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:47.808881: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:48.026815: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:48.246508: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:48.464533: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:48.682542: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:48.900715: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:49.119601: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:49.341450: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:49.563153: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:49.783739: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:50.002341: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:50.219393: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:50.437914: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:50.653902: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:50.871725: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:51.087784: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+2025-06-22 00:21:51.302873: I tensorflow/core/grappler/optimizers/data/replicate_on_split.cc:32] Running replicate on split optimization
+06/22 [00:21:51] INFO     | >> [*] Applying frame transforms on   dataset.py:575
+                          dataset...                                            
+vla_dataset len: 3056000
+                 INFO     | >> [*] Saved dataset statistics    data_utils.py:293
+                          file at path                                          
+                          logs/openvla-7b+mikasa_mix+b24+lr-0.                  
+                          0005+lora-r32+dropout-0.05--mikasa_m                  
+                          ix--image_aug--25-06-22_00-17-23/dat                  
+                          aset_statistics.json                                  
+val_dataset len: 3056000, train_dataset len: 3056000
+  0%|          | 0/50005 [00:00<?, ?it/s]WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+W0000 00:00:1750548114.202974 1667542 op_level_cost_estimator.cc:699] Error in PredictCost() for the op: op: "CropAndResize" attr { key: "T" value { type: DT_FLOAT } } attr { key: "extrapolation_value" value { f: 0 } } attr { key: "method" value { s: "bilinear" } } inputs { dtype: DT_FLOAT shape { dim { size: 1 } dim { size: 224 } dim { size: 224 } dim { size: -7 } } } inputs { dtype: DT_FLOAT shape { dim { size: -2 } dim { size: 4 } } } inputs { dtype: DT_INT32 shape { dim { size: -2 } } } inputs { dtype: DT_INT32 shape { dim { size: 2 } } } device { type: "CPU" vendor: "AuthenticAMD" model: "241" frequency: 2445 num_cores: 128 environment { key: "cpu_instruction_set" value: "AVX SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2" } environment { key: "eigen" value: "3.4.90" } l1_cache_size: 32768 l2_cache_size: 524288 l3_cache_size: 268435456 memory_size: 268435456 } outputs { dtype: DT_FLOAT shape { dim { size: -2 } dim { size: -8 } dim { size: -9 } dim { size: -7 } } }
+W0000 00:00:1750548114.203435 1667542 op_level_cost_estimator.cc:699] Error in PredictCost() for the op: op: "CropAndResize" attr { key: "T" value { type: DT_FLOAT } } attr { key: "extrapolation_value" value { f: 0 } } attr { key: "method" value { s: "bilinear" } } inputs { dtype: DT_FLOAT shape { dim { size: 1 } dim { size: 224 } dim { size: 224 } dim { size: -6 } } } inputs { dtype: DT_FLOAT shape { dim { size: -3 } dim { size: 4 } } } inputs { dtype: DT_INT32 shape { dim { size: -3 } } } inputs { dtype: DT_INT32 shape { dim { size: 2 } } } device { type: "CPU" vendor: "AuthenticAMD" model: "241" frequency: 2445 num_cores: 128 environment { key: "cpu_instruction_set" value: "AVX SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2" } environment { key: "eigen" value: "3.4.90" } l1_cache_size: 32768 l2_cache_size: 524288 l3_cache_size: 268435456 memory_size: 268435456 } outputs { dtype: DT_FLOAT shape { dim { size: -3 } dim { size: -10 } dim { size: -11 } dim { size: -6 } } }
+                                         Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 648, in <module>
+    finetune()
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/draccus/argparsing.py", line 203, in wrapper_inner
+    response = fn(cfg, *args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/vla-scripts/finetune.py", line 465, in finetune
+    output: CausalLMOutputWithPast = vla(
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/parallel/distributed.py", line 1523, in forward
+    else self._run_ddp_forward(*inputs, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/parallel/distributed.py", line 1359, in _run_ddp_forward
+    return self.module(*inputs, **kwargs)  # type: ignore[index]
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/peft/peft_model.py", line 642, in forward
+    return self.get_base_model()(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/lz307/.cache/huggingface/modules/transformers_modules/openvla/openvla-7b/31f090d05236101ebfc381b61c674dd4746d4ce0/modeling_prismatic.py", line 404, in forward
+    language_model_output = self.language_model(
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/transformers/models/llama/modeling_llama.py", line 1208, in forward
+    outputs = self.model(
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/transformers/models/llama/modeling_llama.py", line 1018, in forward
+    layer_outputs = decoder_layer(
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/transformers/models/llama/modeling_llama.py", line 756, in forward
+    hidden_states = self.mlp(hidden_states)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/transformers/models/llama/modeling_llama.py", line 240, in forward
+    down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/peft/tuners/lora/layer.py", line 569, in forward
+    result = result + lora_B(lora_A(dropout(x))) * scaling
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 58.00 MiB. GPU 0 has a total capacity of 79.25 GiB of which 53.69 MiB is free. Including non-PyTorch memory, this process has 79.19 GiB memory in use. Of the allocated memory 76.93 GiB is allocated by PyTorch, and 1.44 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mft+openvla-7b+mikasa_mix+b24+lr-0.0005+lora-r32+dropout-0.05--mikasa_mix--image_aug--25-06-22_00-17-23[0m at: [34mhttps://wandb.ai/leothemagnificent-university-of-cambridge/openvla-mikasa/runs/nu7qpdtt[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20250622_001724-nu7qpdtt/logs[0m
+[2025-06-22 00:22:32,669] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 1667542) of binary: /rds/user/lz307/hpc-work/openvla/.venv/bin/python
+Traceback (most recent call last):
+  File "/rds/user/lz307/hpc-work/openvla/.venv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 347, in wrapper
+    return f(*args, **kwargs)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 812, in main
+    run(args)
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/run.py", line 803, in run
+    elastic_launch(
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 135, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/rds/user/lz307/hpc-work/openvla/.venv/lib64/python3.9/site-packages/torch/distributed/launcher/api.py", line 268, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+vla-scripts/finetune.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-06-22_00:22:32
+  host      : gpu-q-24.data.cluster
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 1667542)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
